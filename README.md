@@ -1,6 +1,6 @@
-# django_zero_to_instagram_devops_youtube
+# django_CHJinstagram
 
-장고 인스타 클론 데브옵스 유튜브버전
+취약점진단팀 인스타 클론 웹 CHJinstagram 깃 커밋 테스트 성공ㅠㅠ
 
 
 ---
