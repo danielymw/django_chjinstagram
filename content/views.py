@@ -1,5 +1,5 @@
 from uuid import uuid4
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Feed, Reply, Like, Bookmark
@@ -8,6 +8,7 @@ import os
 from Jinstagram.settings import MEDIA_ROOT
 
 
+# 메인 페이지
 class Main(APIView):
     def get(self, request):
         email = request.session.get('email', None)
@@ -48,7 +49,7 @@ class Main(APIView):
 
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
-
+# 피드 업로드
 class UploadFeed(APIView):
     def post(self, request):
 
@@ -70,7 +71,7 @@ class UploadFeed(APIView):
 
         return Response(status=200)
 
-
+# 프로필 페이지
 class Profile(APIView):
     def get(self, request):
         email = request.session.get('email', None)
@@ -104,7 +105,7 @@ class UploadReply(APIView):
 
         return Response(status=200)
 
-
+# 좋아요 기능
 class ToggleLike(APIView):
     def post(self, request):
         feed_id = request.data.get('feed_id', None)
@@ -126,7 +127,7 @@ class ToggleLike(APIView):
 
         return Response(status=200)
 
-
+# 북마크 기능
 class ToggleBookmark(APIView):
     def post(self, request):
         feed_id = request.data.get('feed_id', None)
@@ -147,3 +148,37 @@ class ToggleBookmark(APIView):
             Bookmark.objects.create(feed_id=feed_id, is_marked=is_marked, email=email)
 
         return Response(status=200)
+
+# 피드 상세 보기
+# class feedDetail(APIView):
+#     def post(self, request, pk):
+#         email = request.session.get('email', None)
+#
+#         if email is None:
+#             return render(request, "user/login.html")
+#
+#         user = User.objects.filter(email=email).first()
+#
+#         if user is None:
+#             return render(request, "user/login.html")
+#
+#
+#         return render(request, 'content/feedDetail.html')
+
+class feedDetail(APIView):
+    def get(self, request, pk):
+        email = request.session.get('email', None)
+        context = {'email': email}
+        feed = get_object_or_404(Feed, id=pk)
+        context['feed'] = feed
+        return render(request, 'content/feedDetail.html', context)
+
+# 피드 수정
+class feedEdit(APIView):
+    def post(self, request):
+        return render(request, 'content/profile.html')
+
+# 피드 삭제
+class feedDelete(APIView):
+    def post(self, request):
+        return render(request, 'content/profile.html')
