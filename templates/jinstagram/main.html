@@ -110,10 +110,7 @@
 
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
-            <div>test
-                <a id="feed_box" href="/content/detail/{{ feed.id }}">프로필</a></li>
-            </div>
-            <div class="feed_box" >
+            <div class="feed_box" onclick="location.href='/content/detail/{{ feed.id }}'" >
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"

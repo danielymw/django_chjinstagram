@@ -149,28 +149,27 @@ class ToggleBookmark(APIView):
 
         return Response(status=200)
 
-# 피드 상세 보기
-# class feedDetail(APIView):
-#     def post(self, request, pk):
-#         email = request.session.get('email', None)
-#
-#         if email is None:
-#             return render(request, "user/login.html")
-#
-#         user = User.objects.filter(email=email).first()
-#
-#         if user is None:
-#             return render(request, "user/login.html")
-#
-#
-#         return render(request, 'content/feedDetail.html')
-
+# 피드 상세보기
 class feedDetail(APIView):
     def get(self, request, pk):
         email = request.session.get('email', None)
-        context = {'email': email}
+
+        if email is None:
+            return render(request, "user/login.html")
+
         feed = get_object_or_404(Feed, id=pk)
-        context['feed'] = feed
+        context = {
+            'feed': feed,
+        }
+
+        user = User.objects.filter(email=email).first()
+        writer = User.objects.filter(email=feed.email).first()
+        print(writer)
+        image= User.objects.filter(email=feed.email)
+        print(image)
+        if user is None:
+            return render(request, "user/login.html")
+
         return render(request, 'content/feedDetail.html', context)
 
 # 피드 수정
