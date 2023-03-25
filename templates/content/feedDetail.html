@@ -107,17 +107,18 @@
 
 <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
     <div style="width: 500px;min-width: 500px;">
-
         <!-- 여기서부터 피드박스 -->
             <div class="feed_box">
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
-                             src="{% get_media_prefix %}{{ feed.profile_image }}">
+                             src="{% get_media_prefix %}{{ writer.profile_image }}">
                     </div>
                     <div>
-                        {{ feed.nickname }}
+                        {{ writer.nickname }}
                     </div>
+                      <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-left: 300px">수정</span>
+                      <button id="delete_feed">삭제</button>
                 </div>
 
                 <div><img style="width: 100%"
@@ -148,9 +149,11 @@
                     <b>{{ feed.nickname }}</b> {{ feed.content }}
                 </div>
                 <div id="reply_list_{{ feed.id }}">
-                    {% for reply in feed.reply_list %}
+                    {% for reply in reply_list %}
                         <div style="margin: 0 20px;text-align: left;font-size: 14px">
                             <b>{{ reply.nickname }}</b> {{ reply.reply_content }}</div>
+                            <button id="edit_reply">수정</button>
+                            <button id="delete_reply">삭제</button>
                     {% endfor %}
                 </div>
 

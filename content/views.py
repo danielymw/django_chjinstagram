@@ -17,6 +17,7 @@ class Main(APIView):
             return render(request, "user/login.html")
 
         user = User.objects.filter(email=email).first()
+        print(user)
 
         if user is None:
             return render(request, "user/login.html")
@@ -25,7 +26,8 @@ class Main(APIView):
         feed_list = []
 
         for feed in feed_object_list:
-            user = User.objects.filter(email=feed.email).first()
+            writer = User.objects.filter(email=feed.email).first()
+            #
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
@@ -39,14 +41,13 @@ class Main(APIView):
                                   image=feed.image,
                                   content=feed.content,
                                   like_count=like_count,
-                                  profile_image=user.profile_image,
-                                  nickname=user.nickname,
+                                  profile_image=writer.profile_image,
+                                  nickname=writer.nickname,
                                   reply_list=reply_list,
                                   is_liked=is_liked,
                                   is_marked=is_marked
                                   ))
-
-
+            print(feed_list)
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 # 피드 업로드
@@ -151,30 +152,59 @@ class ToggleBookmark(APIView):
 
 # 피드 상세보기
 class feedDetail(APIView):
+
     def get(self, request, pk):
+
         email = request.session.get('email', None)
 
         if email is None:
             return render(request, "user/login.html")
 
-        feed = get_object_or_404(Feed, id=pk)
-        context = {
-            'feed': feed,
-        }
-
         user = User.objects.filter(email=email).first()
-        writer = User.objects.filter(email=feed.email).first()
-        print(writer)
-        image= User.objects.filter(email=feed.email)
-        print(image)
+
         if user is None:
             return render(request, "user/login.html")
 
-        return render(request, 'content/feedDetail.html', context)
+        # feed = get_object_or_404(Feed, id=pk)
+        # context = {
+        #     'feed': feed,
+        # }
+
+        # 피드 가져오기
+        feed = Feed.objects.get(id=pk)
+        # 작성자
+        writer = User.objects.filter(email=feed.email).first()
+        # 댓글
+        reply_object_list = Reply.objects.filter(feed_id=feed.id)
+        reply_list = []
+
+        for reply in reply_object_list:
+            user = User.objects.filter(email=reply.email).first()
+            reply_list.append(dict(reply_content=reply.reply_content,
+                                   nickname=user.nickname))
+        # 좋아요, 북마크
+
+
+        context = {
+            'feed': feed,
+            'reply_list': reply_list,
+            'writer': writer,
+            'user': user
+        }
+        print(context)
+
+        return render(request, 'content/feedDetail.html',  context)
 
 # 피드 수정
 class feedEdit(APIView):
-    def post(self, request):
+    def post(self, request, pk):
+        feed = Feed.objects.get(id=pk)
+
+        return render(request, 'content/profile.html')
+
+    def get(self, request, pk):
+        feed = Feed.objects.get(id=pk)
+
         return render(request, 'content/profile.html')
 
 # 피드 삭제

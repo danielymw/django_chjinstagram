@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import UploadFeed, Profile, Main, UploadReply, ToggleLike, ToggleBookmark, feedDetail,feedEdit, feedDelete
 
 urlpatterns = [
