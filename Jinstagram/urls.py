@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import Sub
 from content.views import Main, UploadFeed
 from .settings import MEDIA_URL, MEDIA_ROOT
 from django.conf.urls.static import static
+from django.contrib.auth import get_user_model
 from . import views
+User = get_user_model()
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
