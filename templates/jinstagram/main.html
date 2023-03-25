@@ -75,10 +75,11 @@
         <a class="navbar-brand" href="main"><img style="width: 100px"
                                                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
         </a>
-     
-            <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
 
+         <form method="get" action="{% url 'user-search' %}">
+             <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search">
+             <button class="btn btn-outline-success" type="submit">Search</button>
+         </form>
 
 
 

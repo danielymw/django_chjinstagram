@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from .models import User
 from django.contrib.auth.hashers import make_password
 from Jinstagram.settings import MEDIA_ROOT
-
+from django.db.models import Q
+from django.views import View
 
 class Join(APIView):
     def get(self, request):
@@ -79,3 +80,15 @@ class UploadProfile(APIView):
         user.save()
 
         return Response(status=200)
+
+
+
+
+class SearchUser(View):
+    def get(self, request):
+        query = request.GET.get('q', '')
+        if query:
+            users = User.objects.filter(Q(email__icontains=query) | Q(nickname__icontains=query))
+        else:
+            users = User.objects.none()
+        return render(request, 'user/search.html', {"users": users})
