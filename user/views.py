@@ -92,3 +92,4 @@ class SearchUser(View):
         else:
             users = User.objects.none()
         return render(request, 'user/search.html', {"users": users})
+# 검색 기능 추가
