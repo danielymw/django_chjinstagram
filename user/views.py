@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from .models import User
 from django.contrib.auth.hashers import make_password
 from Jinstagram.settings import MEDIA_ROOT
-from django.db.models import Q
+from django.db.models import Q, Prefetch
+# Prefetch 추가
 from django.views import View
 
 class Join(APIView):
@@ -93,3 +94,4 @@ class SearchUser(View):
             users = User.objects.none()
         return render(request, 'user/search.html', {"users": users})
 # 검색 기능 추가
+

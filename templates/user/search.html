@@ -97,7 +97,7 @@
                     <div class="box" style="width: 25px; height: 25px">
 
                         <img class="profile"
-                             src="{% get_media_prefix %}{{ user.profile_image }}">
+                             src="{{ user.profile_image.url }}">
 
                     </div>
                 </a>
@@ -120,13 +120,19 @@
   {% if users %}
       <br>
       <br> <!-- 검색 결과를 내리기 위한 공백 -->
-    <ul>
-      {% for user in users %}
-        <li>{{ user.nickname }}</li>
-      {% empty %}
-        <li>No users found.</li>
-      {% endfor %}
-    </ul>
+      <ul>
+          {% for user in users %}
+              <li>
+                  {{ user.nickname }}
+                  <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}" style="max-width: 500px; height: auto;">
+              <!-- 프로필 사진 불러오기 -->
+              </li>
+          {% empty %}
+              <li>
+                  No users found.
+              </li>
+          {% endfor %}
+      </ul>
   {% endif %}
 </body>
 </html>
