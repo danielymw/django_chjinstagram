@@ -1,4 +1,4 @@
-<!-- 피드 상세보기 페이지 -->
+<!-- 피드 상세 페이지 -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -111,14 +111,17 @@
             <div class="feed_box">
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
+                        </div>
+                    <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
                              src="{% get_media_prefix %}{{ writer.profile_image }}">
                     </div>
                     <div>
                         {{ writer.nickname }}
                     </div>
-                      <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-left: 300px">수정</span>
-                      <button id="delete_feed">삭제</button>
+<!--                      <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-left: 300px" onclick="location.href='/content/edit/{{ feed.id }}'">수정</span>-->
+                    <button id="edit_feed" onclick="location.href='/content/edit/{{ feed.id }}'">수정</button>
+                    <button id="delete_feed" onclick="location.href='/content/delete/{{ feed.id }}'">삭제</button>
                 </div>
 
                 <div><img style="width: 100%"
@@ -128,12 +131,12 @@
                     <div>
                         <span id="favorite_{{ feed.id }}" feed_id="{{ feed.id }}"
                               class="favorite material-icons-outlined"
-                              style="color: red;cursor: pointer">{% if feed.is_liked %}
+                              style="color: red;cursor: pointer">{% if is_liked %}
                             favorite{% else %}favorite_border{% endif %}</span>
                     </div>
                     <div>
                         <span id="bookmark_{{ feed.id }}" feed_id="{{ feed.id }}" class="bookmark material-icons-outlined" style="cursor: pointer">
-                            {% if feed.is_marked %}
+                            {% if is_marked %}
                             bookmark
                             {% else %}
                             bookmark_border
@@ -142,7 +145,7 @@
 
                     </div>
                 </div>
-                <div style="margin: 0 20px;text-align: left;font-size: 14px"> 춘식이 <b>외 {{ feed.like_count }}명</b>이
+                <div style="margin: 0 20px;text-align: left;font-size: 14px"> 춘식이 <b>외 {{ like_count }}명</b>이
                     좋아합니다.
                 </div>
                 <div style="margin: 0 20px;text-align: left;font-size: 16px">
@@ -152,8 +155,8 @@
                     {% for reply in reply_list %}
                         <div style="margin: 0 20px;text-align: left;font-size: 14px">
                             <b>{{ reply.nickname }}</b> {{ reply.reply_content }}</div>
-                            <button id="edit_reply">수정</button>
-                            <button id="delete_reply">삭제</button>
+                            <button id="edit_reply" onclick="location.href='/content/reply/edit/{{ reply.id }}'">수정</button>
+                            <button id="delete_reply" onclick="location.href='/content/reply/delete/{{ reply.id }}'">삭제</button>
                     {% endfor %}
                 </div>
 

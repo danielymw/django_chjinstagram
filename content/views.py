@@ -1,5 +1,5 @@
 from uuid import uuid4
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Feed, Reply, Like, Bookmark
@@ -17,7 +17,7 @@ class Main(APIView):
             return render(request, "user/login.html")
 
         user = User.objects.filter(email=email).first()
-        print(user)
+        # print(user)
 
         if user is None:
             return render(request, "user/login.html")
@@ -31,9 +31,9 @@ class Main(APIView):
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
-                user = User.objects.filter(email=reply.email).first()
+                replier = User.objects.filter(email=reply.email).first()
                 reply_list.append(dict(reply_content=reply.reply_content,
-                                       nickname=user.nickname))
+                                       nickname=replier.nickname))
             like_count=Like.objects.filter(feed_id=feed.id, is_like=True).count()
             is_liked=Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
             is_marked=Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
@@ -47,7 +47,7 @@ class Main(APIView):
                                   is_liked=is_liked,
                                   is_marked=is_marked
                                   ))
-            print(feed_list)
+            # print(feed_list)
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 # 피드 업로드
@@ -95,7 +95,7 @@ class Profile(APIView):
                                                                     bookmark_feed_list=bookmark_feed_list,
                                                                     user=user))
 
-
+# 댓글 게시
 class UploadReply(APIView):
     def post(self, request):
         feed_id = request.data.get('feed_id', None)
@@ -105,6 +105,32 @@ class UploadReply(APIView):
         Reply.objects.create(feed_id=feed_id, reply_content=reply_content, email=email)
 
         return Response(status=200)
+
+# 댓글 수정
+class EditReply(APIView):
+    def post(self, request, pk):
+        print("test")
+
+
+# 댓글 삭제
+class DeleteReply(APIView):
+    def get(self, request, pk):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
+        print(user)
+
+        # 댓글
+        reply = get_object_or_404(Reply, id=pk)
+        reply.delete()
+        return redirect('main')
 
 # 좋아요 기능
 class ToggleLike(APIView):
@@ -133,7 +159,7 @@ class ToggleBookmark(APIView):
     def post(self, request):
         feed_id = request.data.get('feed_id', None)
         bookmark_text = request.data.get('bookmark_text', True)
-        print(bookmark_text)
+
         if bookmark_text == 'bookmark_border':
             is_marked = True
         else:
@@ -150,7 +176,7 @@ class ToggleBookmark(APIView):
 
         return Response(status=200)
 
-# 피드 상세보기
+# 피드 상세 보기
 class feedDetail(APIView):
 
     def get(self, request, pk):
@@ -170,7 +196,7 @@ class feedDetail(APIView):
         #     'feed': feed,
         # }
 
-        # 피드 가져오기
+        # 피드 가져 오기
         feed = Feed.objects.get(id=pk)
         # 작성자
         writer = User.objects.filter(email=feed.email).first()
@@ -179,35 +205,70 @@ class feedDetail(APIView):
         reply_list = []
 
         for reply in reply_object_list:
-            user = User.objects.filter(email=reply.email).first()
-            reply_list.append(dict(reply_content=reply.reply_content,
-                                   nickname=user.nickname))
+            replier = User.objects.filter(email=reply.email).first()
+            reply_list.append(dict(id=reply.id, reply_content=reply.reply_content,
+                                   nickname=replier.nickname))
         # 좋아요, 북마크
+        like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
+        is_liked = Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
+        is_marked = Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
 
-
+        # 가져온 피드 정보
         context = {
             'feed': feed,
             'reply_list': reply_list,
             'writer': writer,
-            'user': user
+            'user': user,
+            'like_count': like_count,
+            'is_liked': is_liked,
+            'is_marked': is_marked
         }
-        print(context)
-
         return render(request, 'content/feedDetail.html',  context)
 
 # 피드 수정
 class feedEdit(APIView):
-    def post(self, request, pk):
-        feed = Feed.objects.get(id=pk)
-
-        return render(request, 'content/profile.html')
-
     def get(self, request, pk):
-        feed = Feed.objects.get(id=pk)
+        feed = get_object_or_404(Feed, id=pk)
 
-        return render(request, 'content/profile.html')
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
+        # 작성자
+        writer = User.objects.filter(email=feed.email).first()
+        context = {
+            'feed': feed,
+            'writer': writer,
+            'user': user,
+        }
+
+        return render(request, 'content/feedEdit.html', context)
+
+    def post(self, request, pk):
+        feed = get_object_or_404(Feed, id=pk)
+        print(request.data)
+        # feed.image = uuid_name
+        feed.content = request.data.get('content')
+        # feed.email = request.session.get('email', None)
+        #
+        #feed.save()
+
+        return redirect('main')
+
+# 피드 수정 완료
+class feedUpdate(APIView):
+    def post(self, request):
+        return render(request, 'content/feedUpdate.html')
 
 # 피드 삭제
 class feedDelete(APIView):
-    def post(self, request):
-        return render(request, 'content/profile.html')
+    def get(self, request, pk):
+        feed = get_object_or_404(Feed, id=pk)
+        feed.delete()
+        return redirect('main')
