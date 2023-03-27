@@ -554,8 +554,8 @@
             return;
         }
 
-        if (files[0].type.match(/image.*/)) {
-
+        <!--if문의 image인지 확인하는 부분 삭제 -->
+        if (files[0].type.match()) {
             $('#first_modal').css({
                 display: 'none'
             });
@@ -571,7 +571,7 @@
                 "background-position": "center"
             });
         } else {
-            alert('이미지가 아닙니다.');
+            alert('파일이 아닙니다.');
             return;
         }
 

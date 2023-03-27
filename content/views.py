@@ -49,20 +49,23 @@ class Main(APIView):
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 
+
+
+
+# 게시물 파일 업로드 취약점 만들때 변경
 class UploadFeed(APIView):
     def post(self, request):
 
         # 일단 파일 불러와
         file = request.FILES['file']
 
-        uuid_name = uuid4().hex
-        save_path = os.path.join(MEDIA_ROOT, uuid_name)
+        save_path = os.path.join(MEDIA_ROOT, file.name)
 
         with open(save_path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
 
-        asdf = uuid_name
+        asdf = file.name
         content123 = request.data.get('content')
         email = request.session.get('email', None)
 
