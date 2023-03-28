@@ -68,6 +68,15 @@
             position: relative;
             padding: 10px;
         }
+
+        .reply {
+        margin: 0 20px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+
+
     </style>
 </head>
 <body>
@@ -111,18 +120,32 @@
             <div class="feed_box">
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
-                        </div>
-                    <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
                              src="{% get_media_prefix %}{{ writer.profile_image }}">
                     </div>
-                    <div>
+                    <div style="padding-left: 5px;padding-right: 350px;" >
                         {{ writer.nickname }}
                     </div>
 <!--                      <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-left: 300px" onclick="location.href='/content/edit/{{ feed.id }}'">수정</span>-->
                         {% if feed_session_check %}
-                            <button id="edit_feed" onclick="location.href='/content/edit/{{ feed.id }}'">수정</button>
-                            <button id="delete_feed" onclick="location.href='/content/delete/{{ feed.id }}'">삭제</button>
+                        <div class="dropdown">
+                            <a href="#" role="button" id="dropdownMenuLink2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="box" style="width: 25px; height: 25px">
+
+                            <span class="material-icons"
+                                                      style="color: gray">pending</span>
+
+                            </div>
+                            </a>
+                            <ul class="dropdown-menu" style="left:-100px" aria-labelledby="dropdownMenuLink2">
+                                <li><a class="dropdown-item" id="edit_feed" style="width: 160px;color: cornflowerblue; font-weight: bold" onclick="location.href='/content/edit/{{ feed.id }}'">수정</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" id="delete_feed" style="width: 160px;color: cornflowerblue; font-weight: bold" onclick="location.href='/content/delete/{{ feed.id }}'">삭제</a></li>
+                            </ul>
+                        </div>
                         {% endif %}
                 </div>
 
@@ -155,11 +178,11 @@
                 </div>
                 <div id="reply_list_{{ feed.id }}">
                     {% for reply in reply_list %}
-                        <div style="margin: 0 20px;text-align: left;font-size: 14px">
-                            <b>{{ reply.nickname }}</b> {{ reply.reply_content }}</div>
-                            {% if reply_session_check %}
-                                <button id="delete_reply" onclick="location.href='/content/reply/delete/{{ reply.id }}'">삭제</button>
-                            {% endif %}
+                        <div class="reply" style="margin: 0 20px;text-align: left;font-size: 14px">
+                            <b>{{ reply.nickname }}</b> {{ reply.reply_content }} {% if reply.reply_session_check %}
+                                <a id="delete_reply" style="width: 50px;color: cornflowerblue; font-weight: bold" onclick="location.href='/content/reply/delete/{{ reply.id }}'">삭제</a>
+                            {% endif %}</div>
+
                     {% endfor %}
                 </div>
 

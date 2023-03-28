@@ -218,12 +218,12 @@ class feedDetail(APIView):
 
         for reply in reply_object_list:
             replier = User.objects.filter(email=reply.email).first()
-            reply_list.append(dict(id=reply.id, reply_content=reply.reply_content,
-                                   nickname=replier.nickname))
             if reply.email==email:
                 reply_session_check = True
             else:
                 reply_session_check = False
+            reply_list.append(dict(id=reply.id, reply_content=reply.reply_content,
+                                   nickname=replier.nickname, reply_session_check=reply_session_check))
 
         # 좋아요, 북마크
         like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
@@ -240,7 +240,6 @@ class feedDetail(APIView):
             'is_liked': is_liked,
             'is_marked': is_marked,
             'feed_session_check': feed_session_check,
-            'reply_session_check': reply_session_check
         }
         print(context)
         return render(request, 'content/feedDetail.html',  context)
