@@ -136,9 +136,12 @@ class DeleteReply(APIView):
 
         # 댓글
         reply = get_object_or_404(Reply, id=pk)
-        if reply==email:
+        if reply.email==email:
             reply.delete()
             return redirect('main')
+        else:
+            return Response(status=404)
+
 
 # 좋아요 기능
 class ToggleLike(APIView):
