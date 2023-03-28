@@ -94,11 +94,14 @@ class SearchUser(View):
     def get(self, request):
         query = request.GET.get('q', '')
         if query:
-            users = User.objects.filter(Q(email__icontains=query) | Q(nickname__icontains=query))
+            users = User.objects.raw("SELECT * FROM user WHERE email='%s' OR nickname='%s'" % (query, query))
         else:
             users = User.objects.none()
         return render(request, 'user/search.html', {"users": users})
-# 검색 기능 추가
+
+# 검색 기능 추가 / 검색창 sql 인젝션 가능하게 수정
+ 
+
 
 # WJ 어드민 로그인 페이지 (데이터베이스 값을 가져오지 않음)
 class Admin(APIView):
