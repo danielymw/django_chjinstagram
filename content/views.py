@@ -44,8 +44,6 @@ class Main(APIView):
                                   is_liked=is_liked,
                                   is_marked=is_marked
                                   ))
-
-
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 
@@ -147,3 +145,20 @@ class ToggleBookmark(APIView):
             Bookmark.objects.create(feed_id=feed_id, is_marked=is_marked, email=email)
 
         return Response(status=200)
+
+
+# WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
+class AdminPage(APIView):
+    # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
+    def get(self, request):
+        feeds = Feed.objects.all()
+        content_feed = {'content_feed': feeds}
+        return render(request, 'user/adminpage.html', content_feed)
+
+
+class AdminPageFeed(APIView):
+    # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
+    def get(self, request):
+        feed = Feed.objects.all()
+        content_feed = {'content_feed': feed}
+        return render(request, 'content/adminpagefeed.html', content_feed)
