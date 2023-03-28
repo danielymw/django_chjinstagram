@@ -27,7 +27,7 @@ class Join(APIView):
         User.objects.create(email=email,
                             nickname=nickname,
                             name=name,
-                            password=make_password(password),
+                            password=password,
                             profile_image="default_profile.png")
 
         return Response(status=200)
@@ -47,7 +47,7 @@ class Login(APIView):
         if user is None:
             return Response(status=400, data=dict(message="회원정보가 잘못되었습니다."))
 
-        if user.check_password(password):
+        if user.password == password:
             # TODO 로그인을 했다. 세션 or 쿠키
             request.session['email'] = email
             return Response(status=200)
@@ -99,6 +99,7 @@ class SearchUser(View):
             users = User.objects.none()
         return render(request, 'user/search.html', {"users": users})
 # 검색 기능 추가
+
 # WJ 어드민 로그인 페이지 (데이터베이스 값을 가져오지 않음)
 class Admin(APIView):
     def get(self, request):
