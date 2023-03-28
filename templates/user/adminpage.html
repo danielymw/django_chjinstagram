@@ -1,0 +1,51 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+
+    <h1>Admin Page</h1>
+    <form method="get">
+        <input type="text" name="search_id" placeholder="Search by ID">
+        <input type="submit" value="Search">
+    </form>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Num</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                {% if search_id is not none %}
+                    {% if user.id == search_id %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.nickname }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.password }}</td>
+                        </tr>
+                    {% endif %}
+                {% else %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.password }}</td>
+                    </tr>
+                {% endif %}
+            {% empty %}
+                <tr>
+                    <td colspan="4">No users found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<form method="get" action="/content/adminpagefeed">
+    <input type="submit" value="Feed">
+</form>
+
+
+{% endblock %}
