@@ -7,8 +7,8 @@
 
 ## 실행
 
-python 3.7 이상 버전 설치 후
-
+python 3.7 이상 버전 설치 후 
+찬형
 ```
 # 가상환경 생성 
 python -m venv venv
