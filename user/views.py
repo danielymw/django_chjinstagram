@@ -98,6 +98,51 @@ class SearchUser(View):
         else:
             users = User.objects.none()
         return render(request, 'user/search.html', {"users": users})
+
+'''
+
+'''
+<?php
+// Include the necessary PHP files
+require_once 'db.php'; // Your database connection file
+require_once 'models/user.php'; // Your user model file
+require_once 'templates/search.php'; // Your search results template file
+
+// Get the search query from the request
+$query = $_GET['q'];
+
+if ($query) {
+  // Prepare the SQL query with the search term
+  $sql_query = "SELECT * FROM users WHERE email LIKE '%$query%' OR nickname LIKE '%$query%'";
+
+  // Execute the query
+  $result = mysqli_query($conn, $sql_query);
+
+  // Check if the query returned any results
+  if (mysqli_num_rows($result) > 0) {
+    // Loop through the results and store them in an array
+    $users = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $users[] = new User($row['id'], $row['email'], $row['nickname']); // Instantiate a new user object
+    }
+  } else {
+    // No results found
+    $users = array();
+  }
+} else {
+  // No query provided
+  $users = array();
+}
+
+// Render the search results in the HTML template
+include 'templates/search.php';
+?>
+
+
+
+
+
+
 # 검색 기능 추가
 # WJ 어드민 로그인 페이지 (데이터베이스 값을 가져오지 않음)
 class Admin(APIView):

@@ -25,29 +25,5 @@
         </tbody>
     </table>
 
-    <form method="get">
-        <input type="text" name="search_content" placeholder="Search by CONTENT">
-        <input type="submit" value="Search">
-
-    <table border="1">
-    <thead>
-        <tr>
-            <th>Content</th>
-            <th>Email</th>
-            <th>Image</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for feed in content_feed %}
-            {% if search_content is not defined or search_content in feed.content %}
-                <tr>
-                    <td>{{ feed.content }}</td>
-                    <td>{{ feed.email }}</td>
-                    <td>{{ feed.image }}</td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
 
 {% endblock %}
