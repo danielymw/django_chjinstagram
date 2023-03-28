@@ -85,7 +85,7 @@ DATABASES = {
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
         'NAME': os.environ.get('MYSQL_DB_NAME', 'djangogram'),
         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'itc801'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'check1234'),
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb3'},
     }
