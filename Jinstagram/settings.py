@@ -78,17 +78,30 @@ WSGI_APPLICATION = 'Jinstagram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# mysql 연결
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'NAME': os.environ.get('MYSQL_HOST', 'Team4'),
+        'NAME': os.environ.get('MYSQL_DB_NAME', 'djangogram'),
         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'dlcksgml123!'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'itc801'),
         'PORT': '3306',
-        'OPTIONS': {'charset': 'utf8mb4'},
+        'OPTIONS': {'charset': 'utf8mb3'},
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'HOST': os.environ.get('MYSQL_HOST', '43.201.26.170'),
+#         'NAME': os.environ.get('MYSQL_DB_NAME', 'djangoinsta'),
+#         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
+#         'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'password'),
+#         'PORT': '3306',
+#         'OPTIONS': {'charset': 'utf8mb4'},
+#     }
+# }
 
 
 # Password validation
