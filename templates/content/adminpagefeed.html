@@ -1,5 +1,5 @@
 {% extends 'content/base.html' %}
-
+{% load static %}
 {% block content %}
     <h1>Feed</h1>
 
@@ -17,7 +17,8 @@
                 <tr>
                     <td>{{ feed.content }}</td>
                     <td>{{ feed.email }}</td>
-                    <td>{{ feed.image }}</td>
+                    <td><img src="{% get_media_prefix %}{{ feed.image }}" width="500"></td>
+                <!--어드민 피드 html에서 사진 이미지로 출력되게 -->
                 </tr>
 
 
@@ -25,29 +26,6 @@
         </tbody>
     </table>
 
-    <form method="get">
-        <input type="text" name="search_content" placeholder="Search by CONTENT">
-        <input type="submit" value="Search">
 
-    <table border="1">
-    <thead>
-        <tr>
-            <th>Content</th>
-            <th>Email</th>
-            <th>Image</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for feed in content_feed %}
-            {% if search_content is not defined or search_content in feed.content %}
-                <tr>
-                    <td>{{ feed.content }}</td>
-                    <td>{{ feed.email }}</td>
-                    <td>{{ feed.image }}</td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
 
 {% endblock %}

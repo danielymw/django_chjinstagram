@@ -31,7 +31,7 @@ class Join(APIView):
                             profile_image="default_profile.png")
 
         return Response(status=200)
-
+# password 암호화 기능 삭제
 
 class Login(APIView):
     def get(self, request):
@@ -53,7 +53,7 @@ class Login(APIView):
             return Response(status=200)
         else:
             return Response(status=400, data=dict(message="회원정보가 잘못되었습니다."))
-
+        # 비밀번호를 평문 그대로 검증하게 변경
 
 class LogOut(APIView):
     def get(self, request):
