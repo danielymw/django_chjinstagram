@@ -324,3 +324,6 @@ class AdminPageFeed(APIView):
         feed = Feed.objects.all()
         content_feed = {'content_feed': feed}
         return render(request, 'content/adminpagefeed.html', content_feed)
+
+
+
