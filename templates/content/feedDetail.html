@@ -120,8 +120,10 @@
                         {{ writer.nickname }}
                     </div>
 <!--                      <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-left: 300px" onclick="location.href='/content/edit/{{ feed.id }}'">수정</span>-->
-                    <button id="edit_feed" onclick="location.href='/content/edit/{{ feed.id }}'">수정</button>
-                    <button id="delete_feed" onclick="location.href='/content/delete/{{ feed.id }}'">삭제</button>
+                        {% if feed_session_check %}
+                            <button id="edit_feed" onclick="location.href='/content/edit/{{ feed.id }}'">수정</button>
+                            <button id="delete_feed" onclick="location.href='/content/delete/{{ feed.id }}'">삭제</button>
+                        {% endif %}
                 </div>
 
                 <div><img style="width: 100%"
@@ -155,8 +157,9 @@
                     {% for reply in reply_list %}
                         <div style="margin: 0 20px;text-align: left;font-size: 14px">
                             <b>{{ reply.nickname }}</b> {{ reply.reply_content }}</div>
-                            <button id="edit_reply" onclick="location.href='/content/reply/edit/{{ reply.id }}'">수정</button>
-                            <button id="delete_reply" onclick="location.href='/content/reply/delete/{{ reply.id }}'">삭제</button>
+                            {% if reply_session_check %}
+                                <button id="delete_reply" onclick="location.href='/content/reply/delete/{{ reply.id }}'">삭제</button>
+                            {% endif %}
                     {% endfor %}
                 </div>
 
