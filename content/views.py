@@ -57,14 +57,13 @@ class UploadFeed(APIView):
         # 일단 파일 불러와
         file = request.FILES['file']
 
-        uuid_name = uuid4().hex
-        save_path = os.path.join(MEDIA_ROOT, uuid_name)
+        save_path = os.path.join(MEDIA_ROOT, file.name)
 
         with open(save_path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
 
-        asdf = uuid_name
+        asdf = file.name
         content123 = request.data.get('content')
         email = request.session.get('email', None)
 

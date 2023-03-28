@@ -76,7 +76,18 @@
         <a class="navbar-brand" href="main"><img style="width: 100px"
                                                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
         </a>
-        <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search" aria-label="Search">
+
+        <form method="get" action="{% url 'user-search' %}">
+            <div style="display:flex;">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </div>
+        </form>
+
+
+        <!--검색창에 버튼과 URL 참조 기능(검색 결과창으로) 추가 -->
+
+
         <div style="display: flex">
             <a href="main" style="color: black"><span class="material-icons"
                                                       style="padding-right: 10px"> home</span></a>
@@ -544,8 +555,8 @@
             return;
         }
 
-        if (files[0].type.match(/image.*/)) {
-
+        <!--if문의 image인지 확인하는 부분 삭제 -->
+        if (files[0].type.match()) {
             $('#first_modal').css({
                 display: 'none'
             });
@@ -561,7 +572,7 @@
                 "background-position": "center"
             });
         } else {
-            alert('이미지가 아닙니다.');
+            alert('파일이 아닙니다.');
             return;
         }
 

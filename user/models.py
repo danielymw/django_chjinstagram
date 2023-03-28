@@ -17,6 +17,7 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=24)
     email = models.EmailField(unique=True)
 
+
     USERNAME_FIELD = 'nickname'
 
     class Meta:

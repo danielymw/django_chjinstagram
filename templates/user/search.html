@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Google Icon -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+            rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <title>Hello, world!</title>
+
+    <style>
+        .box {
+            width: 150px;
+            height: 150px;
+            border-radius: 70%;
+            overflow: hidden;
+        }
+
+        .profile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .feed_box {
+            margin: 20px 0;
+            border: solid 1px gray;
+            background-color: white
+        }
+
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            z-index: 10000;
+        }
+
+        .modal_window {
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 800px;
+            height: 600px;
+            position: relative;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed;width: 100%; z-index: 999">
+    <div class="container-fluid" style="justify-content: space-between;flex-wrap: nowrap; min-width: 1000px">
+        <a class="navbar-brand" href="main"><img style="width: 100px"
+                                                 src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
+        </a>
+
+         <form method="get" action="{% url 'user-search' %}">
+            <div style="display:flex;">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </div>
+        </form>
+
+        <!--검색창에 버튼과 URL 참조 기능(검색 결과창으로) 추가 -->
+
+
+        <div style="display: flex">
+            <a href="main" style="color: black"><span class="material-icons"
+                                                      style="padding-right: 10px"> home</span></a>
+            <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-right: 10px">add_box</span>
+
+            <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="box" style="width: 25px; height: 25px">
+
+                        <img class="profile"
+                             src="{{ user.profile_image.url }}">
+
+                    </div>
+                </a>
+
+                <ul class="dropdown-menu" style="left:-158px" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/content/profile">프로필</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/user/logout">로그아웃</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+  <h2>Search User</h2>
+
+
+  {% if users %}
+      <br>
+      <br> <!-- 검색 결과를 내리기 위한 공백 -->
+      <ul>
+          {% for user in users %}
+              <li>
+                  {{ user.nickname }}
+                  <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}" style="max-width: 500px; height: auto;">
+              <!-- 프로필 사진 불러오기 -->
+              </li>
+          {% empty %}
+              <li>
+                  No users found.
+              </li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+</body>
+</html>
