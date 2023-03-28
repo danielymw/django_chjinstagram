@@ -1,3 +1,4 @@
+<!-- 메인 페이지 -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -70,12 +71,29 @@
     </style>
 </head>
 <body>
+
+<div>
+
+
+</div>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed;width: 100%; z-index: 999">
     <div class="container-fluid" style="justify-content: space-between;flex-wrap: nowrap; min-width: 1000px">
         <a class="navbar-brand" href="main"><img style="width: 100px"
                                                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
         </a>
-        <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search" aria-label="Search">
+
+        <form method="get" action="{% url 'user-search' %}">
+            <div style="display:flex;">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </div>
+        </form>
+
+
+        <!--검색창에 버튼과 URL 참조 기능(검색 결과창으로) 추가 -->
+
+
         <div style="display: flex">
             <a href="main" style="color: black"><span class="material-icons"
                                                       style="padding-right: 10px"> home</span></a>
@@ -110,7 +128,7 @@
 
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
-            <div class="feed_box">
+            <div class="feed_box" onclick="location.href='/content/detail/{{ feed.id }}'" >
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
@@ -167,139 +185,139 @@
                 </div>
             </div>
         {% endfor %}
-
         <!-- 여기까지 피드박스 -->
-    </div>
-    <div style="width: 400px; height: 1000px; position: fixed;left: 62%; z-index: 0">
-        <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
-            <div class="box" style="width: 70px; height: 70px">
-                <img class="profile"
-                     src="{% get_media_prefix %}{{ user.profile_image }}">
-            </div>
-            <div style="margin-left: 10px; text-align: left">
-                <div style="font-weight: bold">
-                    {{ user.nickname }}
-                </div>
-                <div style="color: gray">
-                    {{ user.name }}
-                </div>
-            </div>
-        </div>
-        <div style="display: flex;flex-direction: row; justify-content: space-between">
-            <div style="font-weight: bold; color: gray">
-                회원님을 위한 추천
-            </div>
-            <div>
-                <a href="#" style="font-weight: bold;color: black;text-decoration: none">모두보기</a>
-            </div>
-        </div>
-        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left: 10px; text-align: left">
-                    <div style="font-weight: bold;font-size: 14px">
-                        aaaaaaaaaa
-                    </div>
-                    <div style="color: gray;font-size: 14px">
-                        나랑 같이 치킨 먹음
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>
-            </div>
-        </div>
-        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left: 10px; text-align: left">
-                    <div style="font-weight: bold;font-size: 14px">
-                        aaaaaaaaaa
-                    </div>
-                    <div style="color: gray;font-size: 14px">
-                        나랑 같이 치킨 먹음
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>
-            </div>
-        </div>
-        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left: 10px; text-align: left">
-                    <div style="font-weight: bold;font-size: 14px">
-                        aaaaaaaaaa
-                    </div>
-                    <div style="color: gray;font-size: 14px">
-                        나랑 같이 치킨 먹음
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>
-            </div>
-        </div>
-        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left: 10px; text-align: left">
-                    <div style="font-weight: bold;font-size: 14px">
-                        aaaaaaaaaa
-                    </div>
-                    <div style="color: gray;font-size: 14px">
-                        나랑 같이 치킨 먹음
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>
-            </div>
-        </div>
-        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">
-            <div style="display: flex; flex-direction: row">
-                <div class="box" style="width: 35px; height: 35px">
-                    <img class="profile"
-                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">
-                </div>
-                <div style="margin-left: 10px; text-align: left">
-                    <div style="font-weight: bold;font-size: 14px">
-                        aaaaaaaaaa
-                    </div>
-                    <div style="color: gray;font-size: 14px">
-                        나랑 같이 치킨 먹음
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>
-            </div>
-        </div>
-
-        <div style="margin-top: 40px;font-size: 12px;color: gray; text-align: left"> 소개 도움말 홍보센터 API <br> 개인정보처리방침 약관 위치
-            인기 계정 해시태그 언어
-        </div>
-        <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> 2021 인스타그램 프롬 페이스북</div>
 
     </div>
+<!--    <div style="width: 400px; height: 1000px; position: fixed;left: 62%; z-index: 0">-->
+<!--        <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">-->
+<!--            <div class="box" style="width: 70px; height: 70px">-->
+<!--                <img class="profile"-->
+<!--                     src="{% get_media_prefix %}{{ user.profile_image }}">-->
+<!--            </div>-->
+<!--            <div style="margin-left: 10px; text-align: left">-->
+<!--                <div style="font-weight: bold">-->
+<!--                    {{ user.nickname }}-->
+<!--                </div>-->
+<!--                <div style="color: gray">-->
+<!--                    {{ user.name }}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div style="display: flex;flex-direction: row; justify-content: space-between">-->
+<!--            <div style="font-weight: bold; color: gray">-->
+<!--                회원님을 위한 추천-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <a href="#" style="font-weight: bold;color: black;text-decoration: none">모두보기</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; flex-direction: row">-->
+<!--                <div class="box" style="width: 35px; height: 35px">-->
+<!--                    <img class="profile"-->
+<!--                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">-->
+<!--                </div>-->
+<!--                <div style="margin-left: 10px; text-align: left">-->
+<!--                    <div style="font-weight: bold;font-size: 14px">-->
+<!--                        aaaaaaaaaa-->
+<!--                    </div>-->
+<!--                    <div style="color: gray;font-size: 14px">-->
+<!--                        나랑 같이 치킨 먹음-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; flex-direction: row">-->
+<!--                <div class="box" style="width: 35px; height: 35px">-->
+<!--                    <img class="profile"-->
+<!--                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">-->
+<!--                </div>-->
+<!--                <div style="margin-left: 10px; text-align: left">-->
+<!--                    <div style="font-weight: bold;font-size: 14px">-->
+<!--                        aaaaaaaaaa-->
+<!--                    </div>-->
+<!--                    <div style="color: gray;font-size: 14px">-->
+<!--                        나랑 같이 치킨 먹음-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; flex-direction: row">-->
+<!--                <div class="box" style="width: 35px; height: 35px">-->
+<!--                    <img class="profile"-->
+<!--                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">-->
+<!--                </div>-->
+<!--                <div style="margin-left: 10px; text-align: left">-->
+<!--                    <div style="font-weight: bold;font-size: 14px">-->
+<!--                        aaaaaaaaaa-->
+<!--                    </div>-->
+<!--                    <div style="color: gray;font-size: 14px">-->
+<!--                        나랑 같이 치킨 먹음-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; flex-direction: row">-->
+<!--                <div class="box" style="width: 35px; height: 35px">-->
+<!--                    <img class="profile"-->
+<!--                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">-->
+<!--                </div>-->
+<!--                <div style="margin-left: 10px; text-align: left">-->
+<!--                    <div style="font-weight: bold;font-size: 14px">-->
+<!--                        aaaaaaaaaa-->
+<!--                    </div>-->
+<!--                    <div style="color: gray;font-size: 14px">-->
+<!--                        나랑 같이 치킨 먹음-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: center;">-->
+<!--            <div style="display: flex; flex-direction: row">-->
+<!--                <div class="box" style="width: 35px; height: 35px">-->
+<!--                    <img class="profile"-->
+<!--                         src="http://file3.instiz.net/data/file3/2021/05/31/e/b/8/eb8d9ad2d779ca2a0b7acc2b67694a23.png">-->
+<!--                </div>-->
+<!--                <div style="margin-left: 10px; text-align: left">-->
+<!--                    <div style="font-weight: bold;font-size: 14px">-->
+<!--                        aaaaaaaaaa-->
+<!--                    </div>-->
+<!--                    <div style="color: gray;font-size: 14px">-->
+<!--                        나랑 같이 치킨 먹음-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div>-->
+<!--                <a href="#" style="font-size: 14px;font-weight: bold;text-decoration: none">팔로우</a>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div style="margin-top: 40px;font-size: 12px;color: gray; text-align: left"> 소개 도움말 홍보센터 API <br> 개인정보처리방침 약관 위치-->
+<!--            인기 계정 해시태그 언어-->
+<!--        </div>-->
+<!--        <div style="margin-top: 20px;font-size: 12px;color: gray; text-align: left"> 2021 인스타그램 프롬 페이스북</div>-->
+
+<!--    </div>-->
 </div>
 
 <!-- 첫번째 모달 -->
@@ -543,8 +561,8 @@
             return;
         }
 
-        if (files[0].type.match(/image.*/)) {
-
+        <!--if문의 image인지 확인하는 부분 삭제 -->
+        if (files[0].type.match()) {
             $('#first_modal').css({
                 display: 'none'
             });
@@ -560,7 +578,7 @@
                 "background-position": "center"
             });
         } else {
-            alert('이미지가 아닙니다.');
+            alert('파일이 아닙니다.');
             return;
         }
 

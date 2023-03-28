@@ -1,12 +1,12 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Feed(models.Model):
     content = models.TextField()    # 글내용
     image = models.TextField()  # 피드 이미지
     email = models.EmailField(default='')     # 글쓴이
-
+    # email = models.ForeignKey(User, on_delete=models.CASCADE) # 글쓴이 & 사용자 연결
 
 class Like(models.Model):
     feed_id = models.IntegerField(default=0)

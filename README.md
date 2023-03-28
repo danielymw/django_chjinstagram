@@ -1,13 +1,13 @@
 # django_CHJinstagram
 
-취약점진단팀 인스타 클론 웹 CHJinstagram 깃 커밋 테스트 성공ㅠㅠ
+취약점진단팀 인스타  asdasd 클론 웹 CHJinstagram 깃 커밋 테스트 성공ㅠㅠ
 
 
 ---
 
 ## 실행
 
-python 3.7 이상 버전 설치 후
+python 3.7 이상 버전 설치 후 555
 
 ```
 # 가상환경 생성 
