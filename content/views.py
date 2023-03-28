@@ -97,6 +97,16 @@ class Profile(APIView):
 # 댓글 게시
 class UploadReply(APIView):
     def post(self, request):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
         feed_id = request.data.get('feed_id', None)
         reply_content = request.data.get('reply_content', None)
         email = request.session.get('email', None)
@@ -124,12 +134,14 @@ class DeleteReply(APIView):
         if user is None:
             return render(request, "user/login.html")
 
-        print(user)
-
         # 댓글
         reply = get_object_or_404(Reply, id=pk)
-        reply.delete()
-        return redirect('main')
+        if reply.email==email:
+            reply.delete()
+            return redirect('main')
+        else:
+            return Response(status=404)
+
 
 # 좋아요 기능
 class ToggleLike(APIView):
@@ -250,13 +262,24 @@ class feedEdit(APIView):
         return render(request, 'content/feedEdit.html', context)
 
     def post(self, request, pk):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
         feed = get_object_or_404(Feed, id=pk)
-        print(request.data)
+
         # feed.image = uuid_name
         feed.content = request.data.get('content')
+
         # feed.email = request.session.get('email', None)
         #
-        #feed.save()
+        feed.save()
 
         return redirect('main')
 
@@ -268,9 +291,22 @@ class feedUpdate(APIView):
 # 피드 삭제
 class feedDelete(APIView):
     def get(self, request, pk):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
         feed = get_object_or_404(Feed, id=pk)
-        feed.delete()
-        return redirect('main')
+        if feed.email==email:
+            feed.delete()
+            return redirect('main')
+        else:
+            return Response(status=404)
 
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
