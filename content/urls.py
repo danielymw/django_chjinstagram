@@ -1,3 +1,5 @@
+from django.urls import path
+from .views import UploadFeed, Profile, Main, UploadReply, ToggleLike, ToggleBookmark, AdminPage, AdminPageFeed
 from django.urls import path, include
 from .views import UploadFeed, Profile, Main, UploadReply, ToggleLike, \
     ToggleBookmark, feedDetail,feedEdit, feedUpdate, feedDelete,\
@@ -18,6 +20,11 @@ urlpatterns = [
     path('bookmark', ToggleBookmark.as_view()),
     # 프로필 url
     path('profile', Profile.as_view()),
+    path('main', Main.as_view()),
+    # WJ 어드민 페이지에 피드값 경로지정
+    path('adminpage', AdminPage.as_view()),
+    # WJ 어드민페이지피드 경로지정
+    path('adminpagefeed', AdminPageFeed.as_view()),
     # 메인 url
     path('main', Main.as_view(), name='main'),
     # 피드 상세 url

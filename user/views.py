@@ -11,6 +11,8 @@ from django.db.models import Q, Prefetch
 # Prefetch 추가
 from django.views import View
 
+
+
 class Join(APIView):
     def get(self, request):
         return render(request, "user/join.html")
@@ -97,4 +99,56 @@ class SearchUser(View):
             users = User.objects.none()
         return render(request, 'user/search.html', {"users": users})
 # 검색 기능 추가
+# WJ 어드민 로그인 페이지 (데이터베이스 값을 가져오지 않음)
+class Admin(APIView):
+    def get(self, request):
+        # admin_login.html 랜더링
+        return render(request, "user/admin.html")
+
+    def post(self, request):
+        # TODO Login
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+
+        if email == 'rhksflwk' and password == 'rhksflwk':
+            request.session['email'] = email
+            return Response(status=200)
+        else:
+            return Response(status=200)
+
+
+# WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스로
+class AdminPage(APIView):
+    # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
+    def get(self, request):
+        users = User.objects.all()
+        context = {'users': users}
+        return render(request, 'user/adminpage.html', context)
+
+
+
+
+
+'''
+    def get(self, request):
+        # admin_login.html 랜더링
+        return render(request, "user/adminpage.html")
+
+    def post(self, request):
+        # TODO 로그인
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return Response(status=400, data=dict(message="관리자정보가 잘못되었습니다."))
+
+        if user.check_password(password):
+            # TODO 로그인을 했다. 세션 or 쿠키
+            request.session['email'] = email
+            return Response(status=200)
+        else:
+            return Response(status=400, data=dict(message="관리자정보가 잘못되었습니다."))
+'''
 
