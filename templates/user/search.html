@@ -123,9 +123,10 @@
       <ul>
           {% for user in users %}
               <li>
-                  {{ user.nickname }}
-                  <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}" style="max-width: 500px; height: auto;">
+                  <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}" style="max-width: 150px; height: auto;">
               <!-- 프로필 사진 불러오기 -->
+                  {{ user.nickname }}
+
               </li>
           {% empty %}
               <li>
