@@ -83,9 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'NAME': os.environ.get('MYSQL_DB_NAME', 'djangogram'),
+        'NAME': os.environ.get('MYSQL_DB_NAME', 'Team4'),
         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'check1234'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'dlcksgml123!'),
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb3'},
     }

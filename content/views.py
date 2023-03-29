@@ -50,7 +50,8 @@ class Main(APIView):
             # print(feed_list)
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
-# 피드 업로드
+
+# 피드 업로드, 파일명 난수화 기능 삭제
 class UploadFeed(APIView):
     def post(self, request):
 
