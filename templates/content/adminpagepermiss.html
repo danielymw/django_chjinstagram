@@ -6,7 +6,11 @@
 
     <form method="post">
       <label for="user_id">User ID:</label>
-      <input type="text" id="user_id" name="user_id">
+      <select id="user_id" name="user_id">
+        {% for user in users %}
+          <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+      </select>
 
       <label for="permission">Permission:</label>
       <select id="permission" name="permission">
