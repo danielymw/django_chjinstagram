@@ -1,0 +1,21 @@
+{% extends 'content/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Admin Page</h1>
+
+    <form method="post">
+      <label for="user_id">User ID:</label>
+      <input type="text" id="user_id" name="user_id">
+
+      <label for="permission">Permission:</label>
+      <select id="permission" name="permission">
+        <option value="admin">Admin</option>
+        <option value="staff">Staff</option>
+        <option value="user">User</option>
+      </select>
+
+      <button type="submit">Submit</button>
+    </form>
+
+{% endblock %}

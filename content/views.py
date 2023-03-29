@@ -7,7 +7,6 @@ from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
 
-
 # 메인 페이지
 class Main(APIView):
     def get(self, request):
@@ -312,6 +311,7 @@ class feedDelete(APIView):
         #else:
             #return Response(status=404)
 
+
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
@@ -329,4 +329,14 @@ class AdminPageFeed(APIView):
         return render(request, 'content/adminpagefeed.html', content_feed)
 
 
-
+class AdminPagePermission(APIView):
+    def post(self, request):
+        # 클라이언트에서 전달받은 권한을 파라미터로 받아옵니다.
+        permission = request.POST.get('permission')
+        # 모든 사용자를 가져옵니다.
+        users = User.objects.all()
+        # 모든 사용자의 권한을 변경합니다.
+        for user in users:
+            user.permission = permission
+            user.save()
+        return render(request, 'content/adminpagepermiss.html', {'users': users})

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import UploadFeed, Profile, Main, UploadReply, DeleteReply,\
     ToggleLike, ToggleBookmark, feedDetail,feedEdit, feedDelete,\
-    AdminPage, AdminPageFeed
+    AdminPage, AdminPageFeed, AdminPagePermission
 
 urlpatterns = [
     # 피드 업로드 url
@@ -27,7 +27,8 @@ urlpatterns = [
     # 피드 수정 url
     path('edit/<int:pk>', feedEdit.as_view()),
     # 피드 삭제 url
-    path('delete/<int:pk>', feedDelete.as_view())
-
+    path('delete/<int:pk>', feedDelete.as_view()),
+    # 어드민 권한 페이지
+    path('adminpagepermiss', AdminPagePermission.as_view())
 ]
 
