@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import UploadFeed, Profile, Main, UploadReply, DeleteReply,\
-    ToggleLike, ToggleBookmark, feedDetail,feedEdit, feedDelete,\
+    ToggleLike, ToggleBookmark, feedDetail, feedEdit, feedDelete,\
     AdminPage, AdminPageFeed, AdminPagePermission
 
 urlpatterns = [

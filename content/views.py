@@ -330,7 +330,7 @@ class AdminPageFeed(APIView):
 
 
 class AdminPagePermission(APIView):
-    def post(self, request):
+    def get(self, request):
         # 클라이언트에서 전달받은 권한을 파라미터로 받아옵니다.
         permission = request.POST.get('permission')
         # 모든 사용자를 가져옵니다.
