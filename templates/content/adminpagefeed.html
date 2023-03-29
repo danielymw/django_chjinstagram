@@ -1,5 +1,5 @@
 {% extends 'content/base.html' %}
-
+{% load static %}
 {% block content %}
     <h1>Feed</h1>
 
@@ -17,13 +17,15 @@
                 <tr>
                     <td>{{ feed.content }}</td>
                     <td>{{ feed.email }}</td>
-                    <td>{{ feed.image }}</td>
+                    <td><img src="{% get_media_prefix %}{{ feed.image }}" width="500"></td>
+                <!--어드민 피드 html에서 사진 이미지로 출력되게 -->
                 </tr>
 
 
             {% endfor %}
         </tbody>
     </table>
+
 
 
 {% endblock %}

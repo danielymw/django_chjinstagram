@@ -27,11 +27,11 @@ class Join(APIView):
         User.objects.create(email=email,
                             nickname=nickname,
                             name=name,
-                            password=make_password(password),
+                            password=password,
                             profile_image="default_profile.png")
 
         return Response(status=200)
-
+# password 암호화 기능 삭제
 
 class Login(APIView):
     def get(self, request):
@@ -47,13 +47,13 @@ class Login(APIView):
         if user is None:
             return Response(status=400, data=dict(message="회원정보가 잘못되었습니다."))
 
-        if user.check_password(password):
+        if user.password == password:
             # TODO 로그인을 했다. 세션 or 쿠키
             request.session['email'] = email
             return Response(status=200)
         else:
             return Response(status=400, data=dict(message="회원정보가 잘못되었습니다."))
-
+        # 비밀번호를 평문 그대로 검증하게 변경
 
 class LogOut(APIView):
     def get(self, request):
@@ -90,21 +90,19 @@ class UploadProfile(APIView):
 
 
 
-class SearchUser(View):
+class SearchUser(APIView):
     def get(self, request):
         query = request.GET.get('q', '')
         if query:
-            users = User.objects.filter(Q(email__icontains=query) | Q(nickname__icontains=query))
+            users = User.objects.raw("SELECT * FROM User WHERE email='%s' OR nickname='%s'" % (query, query))
         else:
             users = User.objects.none()
-        return render(request, 'user/search.html', {"users": users})
+        return render(request, 'user/search.html',{"users": users})
+
+# 검색 기능 추가 / 검색창 sql 인젝션 가능하게 수정
+ 
 
 
-
-
-
-
-# 검색 기능 추가
 # WJ 어드민 로그인 페이지 (데이터베이스 값을 가져오지 않음)
 class Admin(APIView):
     def get(self, request):

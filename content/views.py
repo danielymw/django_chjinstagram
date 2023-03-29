@@ -7,7 +7,6 @@ from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
 
-
 # 메인 페이지
 class Main(APIView):
     def get(self, request):
@@ -50,7 +49,8 @@ class Main(APIView):
             # print(feed_list)
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
-# 피드 업로드
+
+# 피드 업로드, 파일명 난수화 기능 삭제
 class UploadFeed(APIView):
     def post(self, request):
 
@@ -115,12 +115,6 @@ class UploadReply(APIView):
 
         return Response(status=200)
 
-# 댓글 수정
-class EditReply(APIView):
-    def post(self, request, pk):
-        print("test")
-
-
 # 댓글 삭제
 class DeleteReply(APIView):
     def get(self, request, pk):
@@ -136,11 +130,11 @@ class DeleteReply(APIView):
 
         # 댓글
         reply = get_object_or_404(Reply, id=pk)
-        if reply.email==email:
-            reply.delete()
-            return redirect('main')
-        else:
-            return Response(status=404)
+        #if reply.email==email:
+        reply.delete()
+        return redirect('main')
+        #else:
+            #return Response(status=404)
 
 
 
@@ -210,6 +204,13 @@ class feedDetail(APIView):
 
         # 피드 가져 오기
         feed = Feed.objects.get(id=pk)
+
+        # 세션 체크
+        if feed.email == email:
+            feed_session_check = True
+        else:
+            feed_session_check = False
+
         # 작성자
         writer = User.objects.filter(email=feed.email).first()
         # 댓글
@@ -218,8 +219,13 @@ class feedDetail(APIView):
 
         for reply in reply_object_list:
             replier = User.objects.filter(email=reply.email).first()
+            if reply.email==email:
+                reply_session_check = True
+            else:
+                reply_session_check = False
             reply_list.append(dict(id=reply.id, reply_content=reply.reply_content,
-                                   nickname=replier.nickname))
+                                   nickname=replier.nickname, reply_session_check=reply_session_check))
+
         # 좋아요, 북마크
         like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
         is_liked = Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
@@ -233,8 +239,10 @@ class feedDetail(APIView):
             'user': user,
             'like_count': like_count,
             'is_liked': is_liked,
-            'is_marked': is_marked
+            'is_marked': is_marked,
+            'feed_session_check': feed_session_check,
         }
+        print(context)
         return render(request, 'content/feedDetail.html',  context)
 
 # 피드 수정
@@ -284,11 +292,6 @@ class feedEdit(APIView):
 
         return redirect('main')
 
-# 피드 수정 완료
-class feedUpdate(APIView):
-    def post(self, request):
-        return render(request, 'content/feedUpdate.html')
-
 # 피드 삭제
 class feedDelete(APIView):
     def get(self, request, pk):
@@ -303,11 +306,12 @@ class feedDelete(APIView):
             return render(request, "user/login.html")
 
         feed = get_object_or_404(Feed, id=pk)
-        if feed.email==email:
-            feed.delete()
-            return redirect('main')
-        else:
-            return Response(status=404)
+        # if feed.email==email:
+        feed.delete()
+        return redirect('main')
+        #else:
+            #return Response(status=404)
+
 
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
@@ -324,3 +328,16 @@ class AdminPageFeed(APIView):
         feed = Feed.objects.all()
         content_feed = {'content_feed': feed}
         return render(request, 'content/adminpagefeed.html', content_feed)
+
+
+class AdminPagePermission(APIView):
+    def post(self, request):
+        # 클라이언트에서 전달받은 권한을 파라미터로 받아옵니다.
+        permission = request.POST.get('permission')
+        # 모든 사용자를 가져옵니다.
+        users = User.objects.all()
+        # 모든 사용자의 권한을 변경합니다.
+        for user in users:
+            user.permission = permission
+            user.save()
+        return render(request, 'content/adminpagepermiss.html', {'users': users})
