@@ -110,21 +110,18 @@
     <div style="width: 500px;min-width: 500px;">
         <!-- 여기서부터 피드박스 -->
             <div class="feed_box">
-                <script> var feed_id = "{{ feed.id }}" </script>
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
-                    <div class="box" style="width: 35px; height: 35px">
-                        </div>
                     <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
                              src="{% get_media_prefix %}{{ writer.profile_image }}">
                     </div>
-                    <div>
+                    <div style="padding-left: 5px" >
                         {{ writer.nickname }}
                     </div>
                </div>
                     <img style="width: 100%"
                           src="{% get_media_prefix %}{{ feed.image }}">
-                <button id="button_image_edit" style="margin-right: 40px"> 사진 수정 </button>
+                <button id="button_image_edit" style="margin-right: 20px"> 사진 수정 </button>
                 <input type="file" id="input_image" onchange="image_upload();" style="display: none" />
 
                 <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
