@@ -1,4 +1,5 @@
 <!-- 피드 수정 페이지 -->
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -108,22 +109,19 @@
 <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
     <div style="width: 500px;min-width: 500px;">
         <!-- 여기서부터 피드박스 -->
-
             <div class="feed_box">
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
-                    <div class="box" style="width: 35px; height: 35px">
-                        </div>
                     <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
                              src="{% get_media_prefix %}{{ writer.profile_image }}">
                     </div>
-                    <div>
+                    <div style="padding-left: 5px" >
                         {{ writer.nickname }}
                     </div>
                </div>
                     <img style="width: 100%"
                           src="{% get_media_prefix %}{{ feed.image }}">
-                <button id="button_image_upload" style="margin-right: 40px"> 사진 수정 </button>
+                <button id="button_image_edit" style="margin-right: 20px"> 사진 수정 </button>
                 <input type="file" id="input_image" onchange="image_upload();" style="display: none" />
 
                 <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
@@ -143,21 +141,23 @@
 <script>
     $('#edit_button').click(function () {
         alert("수정하기 눌렀다.");
-
+        let feed_id = "{{ feed.id }}";
+        console.log(feed_id);
         let content = $('#input_content').val();
 
         console.log(content);
 
         $.ajax({
-            url: "/content/edit",
+            url: "/content/edit/"+feed_id,
             data: {
+                feed_id : feed_id,
                 content : content,
 
             },
             method: "POST",
             success: function (data) {
                 console.log("성공");
-                alert("피드를 수정하였습니다.);
+                alert("피드를 수정하였습니다.");
                 location.replace('/main');
 
             },
