@@ -83,9 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'NAME': os.environ.get('MYSQL_DB_NAME', 'djangogram'),
+        'NAME': os.environ.get('MYSQL_DB_NAME', 'Team4'),
         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'check1234'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'qkqh123!'),
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb3'},
     }
@@ -157,4 +157,5 @@ MEDIA_URL = '/media/' # 항상 / 로 끝나도록 설정
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 커스텀 유저 모델 사용
+
 AUTH_USER_MODEL = 'user.User'

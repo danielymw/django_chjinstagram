@@ -1,0 +1,72 @@
+#sw 개발보안 가이드
+분석,설계단계 보안강화 활동
+구현단계 시큐어코딩 가이드
+
+#sw보안약점 진단가이드
+유형,설계항목,설명,보안대책
+가.취약점개요
+나.설계 시 고려사항
+다. 진단 세부사항
+라. 연관된 구현단계 보안약점 항목
+
+
+metasploitable2 192.168.119.130
+
+vmx0 fw 14 
+vmx1 dmz f6  10.0.10.100
+vmx2 dev 1e 
+vmx3 soc 00 
+vmx4 intra 0a 
+
+https://reliable-waiter-88c.notion.site/4-bdd6b6f8559244c2b25b792532de9ced
+
+공격
+/board/index.asp
+!보안안전@
+
+[파일 업로드 취약점]
+: 웹페이지의 게시판에 사진, 동영상, 문서 파일 등을 업로드할 수 있고
+스크립트(asp, php)로 업로드하는 제한이 없을 때, 공격자가 악성코드(웹쉘)를 포함한 스크립트를 업로드 시 파라미터 입력값 검증이 되지 않아 발생하는 취약점이다.
+
+리스트~함수 / CLASS/ 모듈 / 예외처리 / 파일읽고쓰기 / 정규표현식/ 웹페이지/시간처리
+
+https://www.notion.so/c3a47c33853c4817a978a165ba69d957
+https://www.notion.so/c3a47c33853c4817a978a165ba69d957
+
+#디자인 싱킹기법(Design Sinking)
+(초기)서비스 디자인(Service Design): 설계, 아이디어 도출 / 브레인스토밍 / 아이디어회의
+★Visualization(시각화): 
+Tangibilization(형상화)
+조합을 해서 어떠한 것을 한층 더 좋게 만들어보자
+1. Empathize: 주제 인식: 고객의 요구사항 인식
+2. Define: 
+3. Ideate: 공감하고 인지해라0
+4. Prototype: 보여주기 쉬워짐 ex) 그림, 글
+5. Test: 
+
+beat1103@gmail.com.
+반려, 팬딩
+정리된 아이디어
+
+1. Be. Powerpoint Presentation Template / https://elements.envato.com/be-powerpoint-presentation-template-RSVN8E
+2. Minimal Maska / https://elements.envato.com/minimal-maska-7N7PPB
+3. The X Note / https://elements.envato.com/the-x-note-powerpoint-template-C79JX7
+4. Ciri Powerpoint Template / https://elements.envato.com/ciri-powerpoint-template-6JQFHA
+5. Sparrow - Creative Agency / https://elements.envato.com/sparrow-creative-agency-powerpoint-presentation-K27TGZ
+
+https://drive.google.com/drive/folders/1CvqhhIFx4j6CzOMriQkcmb2m_5E3Zb1M
+
+-----
+개인정보보호: https://drive.google.com/file/d/1MGidFi6QV5HCR_PZ56X3UXSqlEYANta-/view
+
+deb http://ftp.daumkakao.com/ubuntu/ focal main
+deb http://archive.ubuntu.com/ubuntu/ focal main
+
+deb http://ftp.daumkakao.com/ubuntu/ focal universe
+deb http://archive.ubuntu.com/ubuntu/ focal universe
+
+deb http://ftp.daumkakao.com/ubuntu/ focal multiverse
+deb http://archive.ubuntu.com/ubuntu/ focal multiverse
+
+deb http://ftp.daumkakao.com/ubuntu/ focal restricted
+deb http://archive.ubuntu.com/ubuntu/ focal restricted

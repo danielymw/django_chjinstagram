@@ -128,19 +128,28 @@
 
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
-            <div class="feed_box" onclick="location.href='/content/detail/{{ feed.id }}'" >
+            <div class="feed_box"  >
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
-                        <img class="profile"
-                             src="{% get_media_prefix %}{{ feed.profile_image }}">
+
+                            <img class="profile"
+                                 src="{% get_media_prefix %}{{ feed.profile_image }}">
+
+
+
+
                     </div>
                     <div>
                         {{ feed.nickname }}
                     </div>
                 </div>
 
-                <div><img style="width: 100%"
+                <div>
+                    <a href="{% get_media_prefix %}{{ feed.image }}">
+                    <img style="width: 100%"
                           src="{% get_media_prefix %}{{ feed.image }}">
+                    </a>
+
                 </div>
                 <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
                     <div>
@@ -477,6 +486,7 @@
     $(".modal_close").click(function () {
         $('#first_modal').css({
             display: 'none'
+
         });
         $('#second_modal').css({
             display: 'none'
