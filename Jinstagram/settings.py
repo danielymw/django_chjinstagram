@@ -158,3 +158,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 커스텀 유저 모델 사용
 AUTH_USER_MODEL = 'user.User'
+
+
+# WJ CSRF 안나오게함.
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+
