@@ -6,20 +6,39 @@
 
     <form method="post">
       <label for="user_id">User ID:</label>
-      <select id="user_id" name="user_id">
+      <select id="user_id" name="user_id" onchange="changeUser()">
         {% for user in users %}
-          <option value="{{ user.id }}">{{ user.username }}</option>
+          <option value="user_name">{{ user.name }}</option>
         {% endfor %}
       </select>
 
       <label for="permission">Permission:</label>
-      <select id="permission" name="permission">
-        <option value="admin">Admin</option>
-        <option value="staff">Staff</option>
-        <option value="user">User</option>
+      <select id="permission" name="permission" onchange="changePermission()">
+        <option value="3">Admin</option>
+        <option value="2">Staff</option>
+        <option value="1">User</option>
       </select>
 
-      <button type="submit">Submit</button>
+      <button id="permission_edit" type="submit">Submit</button>
     </form>
+
+    <script>
+
+        function changeUser(){
+            var user_name = document.getElementById('user_id');
+            user = user_name.options[user_name.selectedIndex].text;
+            alert(user)
+        }
+
+         function changePermission(){
+            var permission = document.getElementById('permission');
+            user_permission = permission.options[permission.selectedIndex].value;
+            alert(user_permission)
+        }
+
+
+    });
+
+  </script>
 
 {% endblock %}
