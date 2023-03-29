@@ -36,4 +36,3 @@ urlpatterns = [
     # 피드 삭제 url
     path('delete/<int:pk>', feedDelete.as_view())
 ]
-
