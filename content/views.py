@@ -333,27 +333,24 @@ class AdminPagePermission(APIView):
     def get(self, request):
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
-        print(users)
+
         context = {
             'users': users
         }
 
-        permission = request.data.get('permission')
-
-        print(context)
-
-        # 모든 사용자의 권한을 변경합니다.
-        # for user in users:
-        #     user.permission = permission
-        #     user.save()
         return render(request, 'content/adminpagepermiss.html', context)
 
     def post(self, request):
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
+        # 옵션 값 가져오기
+        user_name=request.data.get('user_name')
+        # 옵션 사용자 필터링
+        user= User.objects.filter(name=user_name).first()
 
-        # 모든 사용자의 권한을 변경합니다.
-        # for user in users:
-        #     user.permission = permission
-        #     user.save()
+        print(user)
+
+        user.permission = request.data.get('user_permission')
+        user.save()
+
         return render(request, 'content/adminpagepermiss.html', {'users': users})
