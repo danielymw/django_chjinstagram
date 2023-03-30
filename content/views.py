@@ -389,12 +389,4 @@ class AdminPagePermission(APIView):
 
 # WJ 다운로드 피드 만들기
 
-class feedDownload(View):
-    def get(self, request, file_name):
-        file_path = os.path.join(settings.MEDIA_ROOT, file_name)
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as fh:
-                response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-                response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-                return response
-        raise Http404
+

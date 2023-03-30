@@ -146,7 +146,7 @@
 
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
-            <div class="feed_box" onclick="location.href='/content/detail/{{ feed.id }}'" >
+            <div class="feed_box" >
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
                         <img class="profile"
@@ -158,7 +158,7 @@
                 </div>
 
                 <div><img style="width: 100%"
-                          src="{% get_media_prefix %}{{ feed.image }}">
+                          src="{% get_media_prefix %}{{ feed.image }}" onclick="location.href='/content/detail/{{ feed.id }}'" >
                 </div>
                 <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
                     <div>
@@ -166,6 +166,7 @@
                               class="favorite material-icons-outlined"
                               style="color: red;cursor: pointer">{% if feed.is_liked %}
                             favorite{% else %}favorite_border{% endif %}</span>
+
                     </div>
                     <div>
                         <span id="bookmark_{{ feed.id }}" feed_id="{{ feed.id }}" class="bookmark material-icons-outlined" style="cursor: pointer">
@@ -454,6 +455,7 @@
             },
             complete: function () {
                 console.log("완료");
+                location.reload();
             }
         });
     });
