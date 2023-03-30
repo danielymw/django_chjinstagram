@@ -107,6 +107,7 @@ class SearchUser(APIView):
 class Admin(APIView):
     def get(self, request):
         # admin_login.html 랜더링
+
         return render(request, "user/admin.html")
 
     def post(self, request):
@@ -114,11 +115,19 @@ class Admin(APIView):
         email = request.data.get('email', None)
         password = request.data.get('password', None)
 
-        if email == 'rhksflwk' and password == 'rhksflwk':
-            request.session['email'] = email
-            return Response(status=200)
-        else:
-            return Response(status=200)
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return Response(status=400, data=dict(message="관리자가 아닙니다."))
+
+        if user.password == password:
+            if user.permission == 3:
+                request.session['email'] = email
+                return Response(status=200)
+            else:
+                return Response(status=400, data=dict(message="잘못된 접근입니다."))
+
+
 
 
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스로
