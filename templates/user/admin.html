@@ -58,14 +58,9 @@
             },
             method: "POST",
             success: function (data) {
-                if (email === 'rhksflwk' && password === 'rhksflwk') {
-                    console.log("Success");
-                    alert("Admin login successful");
-                    location.replace('/user/adminpage');
-                } else {
-                    alert("Incorrect admin information");
-                }
-
+               console.log("Success");
+               alert("Admin login successful");
+               location.replace('/user/adminpage');
             },
             error: function (request, status, error) {
                 console.log("error");
