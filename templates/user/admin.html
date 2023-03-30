@@ -44,27 +44,31 @@
 
 
 <!-- 아이디 : rhksflwk ,  비밀번호 : rhksflwk -->
+
+
 <script>
     $('#login_button').click(function () {
 
         let email = $('#input_email').val();
         let password = $('#input_password').val();
+        let permission = 3; // Set permission level to 3
 
         $.ajax({
             url: "/user/admin",
             data: {
                 email : email,
-                password : password
+                password : password,
+                permission : permission,
             },
             method: "POST",
             success: function (data) {
-                if (email === 'rhksflwk' && password === 'rhksflwk') {
+                if (data.permission === 3) {
                     console.log("Success");
-                    alert("Admin login successful");
+                    alert("Admin login");
                     location.replace('/user/adminpage');
-                } else {
-                    alert("Incorrect admin information");
-                }
+            } else {
+    alert("로그인 실패");
+}
 
             },
             error: function (request, status, error) {

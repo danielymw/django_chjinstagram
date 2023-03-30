@@ -113,12 +113,18 @@ class Admin(APIView):
         # TODO Login
         email = request.data.get('email', None)
         password = request.data.get('password', None)
+        permission = request.data.get('permission', None)
 
-        if email == 'rhksflwk' and password == 'rhksflwk':
+        user = User.objects.filter(email=email).first()
+
+
+# 퍼미션 3만 접속 가능하게
+        if user.permission == '3':
             request.session['email'] = email
             return Response(status=200)
         else:
             return Response(status=200)
+
 
 
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스로
