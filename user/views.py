@@ -107,6 +107,7 @@ class SearchUser(APIView):
 class Admin(APIView):
     def get(self, request):
         # admin_login.html 랜더링
+
         return render(request, "user/admin.html")
 
     def post(self, request):
@@ -117,13 +118,17 @@ class Admin(APIView):
 
         user = User.objects.filter(email=email).first()
 
+        if user is None:
+            return Response(status=400, data=dict(message="관리자가 아닙니다."))
 
-# 퍼미션 3만 접속 가능하게
-        if user.permission == '3':
-            request.session['email'] = email
-            return Response(status=200)
-        else:
-            return Response(status=200)
+        if user.password == password:
+            if user.permission == 3:
+                request.session['email'] = email
+                return Response(status=200)
+            else:
+                return Response(status=400, data=dict(message="잘못된 접근입니다."))
+
+
 
 
 

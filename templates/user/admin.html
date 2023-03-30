@@ -62,14 +62,9 @@
             },
             method: "POST",
             success: function (data) {
-                if (data.permission === 3) {
-                    console.log("Success");
-                    alert("Admin login");
-                    location.replace('/user/adminpage');
-            } else {
-    alert("로그인 실패");
-}
-
+               console.log("Success");
+               alert("Admin login successful");
+               location.replace('/user/adminpage');
             },
             error: function (request, status, error) {
                 console.log("error");
