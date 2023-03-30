@@ -90,14 +90,14 @@ class UploadProfile(APIView):
 
 
 
-class SearchUser(View):
+class SearchUser(APIView):
     def get(self, request):
         query = request.GET.get('q', '')
         if query:
-            users = User.objects.raw("SELECT * FROM user WHERE email='%s' OR nickname='%s'" % (query, query))
+            users = User.objects.raw("SELECT * FROM User WHERE email='%s' OR nickname='%s'" % (query, query))
         else:
             users = User.objects.none()
-        return render(request, 'user/search.html', {"users": users})
+        return render(request, 'user/search.html',{"users": users})
 
 # 검색 기능 추가 / 검색창 sql 인젝션 가능하게 수정
  
