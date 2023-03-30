@@ -8,15 +8,15 @@
     <h1>Admin Page</h1>
 
     <form method="post">
-      <label for="user_name">User ID:</label>
-      <select id="user_name" name="user_name">
+      <label for="user_email">User ID:</label>
+      <select id="user_email" name="user_email">
         {% for user in users %}
-          <option value="user_name">{{ user.name }}</option>
+          <option value="user_email">{{ user.email }}</option>
         {% endfor %}
       </select>
 
-      <label for="permission">Permission:</label>
-      <select id="permission" name="permission">
+      <label for="user_permission">Permission:</label>
+      <select id="user_permission" name="user_permission">
         <option value="3">Admin</option>
         <option value="2">Staff</option>
         <option value="1">User</option>
@@ -31,26 +31,22 @@
         $('#permission_edit').click(function () {
             alert("수정하기 눌렀다.");
 
-            var user = document.getElementById('user_name');
-            user_name = user_name.options[user_name.selectedIndex].text;
-            var permission = document.getElementById('permission');
+            var user = document.getElementById('user_email');
+            user_email = user.options[user.selectedIndex].text;
+            var permission = document.getElementById('user_permission');
             user_permission = permission.options[permission.selectedIndex].value;
-            alert(user_name);
-            alert(user_permission);
 
         $.ajax({
             url: "/content/adminpagepermiss" ,
             data: {
-                user_name : user_name,
+                user_email : user_email,
                 user_permission : user_permission,
-
             },
             method: "POST",
             success: function (data) {
                 console.log("성공");
-                alert("피드를 수정하였습니다.");
-                location.replace('/main');
-
+                alert("권한을 수정하였습니다.");
+                location.replace('/user/adminpage');
             },
             error: function (request, status, error) {
                 alert("에러");

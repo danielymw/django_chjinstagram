@@ -242,7 +242,7 @@ class feedDetail(APIView):
             'is_marked': is_marked,
             'feed_session_check': feed_session_check,
         }
-        print(context)
+        # print(context)
         return render(request, 'content/feedDetail.html',  context)
 
 # 피드 수정
@@ -285,7 +285,7 @@ class feedEdit(APIView):
 
         # feed.image = uuid_name
         feed.content = request.data.get('content')
-
+        print(request.data)
         # feed.email = request.session.get('email', None)
         #
         feed.save()
@@ -332,26 +332,53 @@ class AdminPageFeed(APIView):
 
 class AdminPagePermission(APIView):
     def get(self, request):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/admin.html")
+
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
 
         context = {
             'users': users
         }
-
+        # print(context)
         return render(request, 'content/adminpagepermiss.html', context)
 
     def post(self, request):
-        # 모든 사용자를 가져옵니다.
-        users = User.objects.all()
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/admin.html")
+
+        user = User.objects.filter(email=email).first()
+
         # 옵션 값 가져오기
-        user_name=request.data.get('user_name')
-        # 옵션 사용자 필터링
-        user= User.objects.filter(name=user_name).first()
+        # user_email = request.data.get('user_email')
+        # user_per = User.objects.filter(email=user_email).first()
+        # user_per.permission = request.data.get('user_permission')
+        # user_per.save()
+            # 옵션 사용자 필터링
+        # user_permission = User.objects.filter(email=user_email).first()
+        # user_permission.permission = request.data.get('user_permission')
+        # print(user_permission)
+        # user_permission.save()
 
-        print(user)
+        #return render(request, 'content/adminpagepermiss.html')
 
-        user.permission = request.data.get('user_permission')
-        user.save()
+        if user.permission == 3:
+            # 옵션 값 가져오기
+            user_email = request.data.get('user_email')
 
-        return render(request, 'content/adminpagepermiss.html', {'users': users})
+            # 옵션 사용자 필터링
+            user_permission = User.objects.filter(email=user_email).first()
+            user_permission.permission = request.data.get('user_permission')
+            user_permission.save()
+
+            return Response(status=200)
+        else:
+            return render(request, "user/admin.html")
+
+
+

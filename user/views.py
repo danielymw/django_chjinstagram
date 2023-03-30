@@ -118,17 +118,16 @@ class Admin(APIView):
         user = User.objects.filter(email=email).first()
 
         if user is None:
-            return Response(status=400, data=dict(message="관리자가 아닙니다."))
+            return Response(status=400, data=dict(message="회원정보가 없습니다."))
 
         if user.password == password:
-            if user.permission == 3:
+            if (user.permission == 2) or (user.permission == 3):
                 request.session['email'] = email
                 return Response(status=200)
             else:
-                return Response(status=400, data=dict(message="잘못된 접근입니다."))
+                return Response(status=400, data=dict(message="관리자가 아닙니다."))
 
-
-
+        return Response(status=400, data=dict(message="아이디 또는 패스워드 오류입니다."))
 
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스로
 class AdminPage(APIView):
