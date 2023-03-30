@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            # 필터링
+            'autoescape': False,
         },
     },
 ]
@@ -158,3 +160,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 커스텀 유저 모델 사용
 AUTH_USER_MODEL = 'user.User'
+
+
+# WJ CSRF 안나오게함.
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_BROWSER_XSS_FILTER = False
+
+X_FRAME_OPTIONS = 'ALLOW-FROM'
+
