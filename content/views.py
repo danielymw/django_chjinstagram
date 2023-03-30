@@ -7,7 +7,6 @@ from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
 
-
 # 메인 페이지
 class Main(APIView):
     def get(self, request):
@@ -136,6 +135,7 @@ class DeleteReply(APIView):
         return redirect('main')
         #else:
             #return Response(status=404)
+
 
 
 # 좋아요 기능
@@ -312,6 +312,7 @@ class feedDelete(APIView):
         #else:
             #return Response(status=404)
 
+
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
@@ -327,3 +328,30 @@ class AdminPageFeed(APIView):
         feed = Feed.objects.all()
         content_feed = {'content_feed': feed}
         return render(request, 'content/adminpagefeed.html', content_feed)
+
+
+class AdminPagePermission(APIView):
+    def get(self, request):
+        # 모든 사용자를 가져옵니다.
+        users = User.objects.all()
+
+        context = {
+            'users': users
+        }
+
+        return render(request, 'content/adminpagepermiss.html', context)
+
+    def post(self, request):
+        # 모든 사용자를 가져옵니다.
+        users = User.objects.all()
+        # 옵션 값 가져오기
+        user_name=request.data.get('user_name')
+        # 옵션 사용자 필터링
+        user= User.objects.filter(name=user_name).first()
+
+        print(user)
+
+        user.permission = request.data.get('user_permission')
+        user.save()
+
+        return render(request, 'content/adminpagepermiss.html', {'users': users})

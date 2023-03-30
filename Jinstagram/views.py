@@ -12,4 +12,10 @@ class Sub(APIView):
         print("포스트로 호출")
         return render(request, "jinstagram/main.html")
 
-
+    def get_post(request):
+        if request.method == 'GET':
+            id = request.GET['id']
+            data = {
+                'data': id,
+            }
+            return render(request, 'main/parameter.html', data)
