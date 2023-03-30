@@ -100,9 +100,11 @@
         <!--URL 버튼 퍼미션 3만 나오게 하기 (검색 결과창으로) 추가 -->
         <div style="display: flex">
 
-            <a href="/user/adminpage" style="color: black">
-                <span class="material-symbols-outlined"  style="padding-right: 10px"> settings_account_box </span>
-            </a>
+        {% if user.permission == 3 %}
+        <a href="/user/adminpage" style="color: black">
+            <span class="material-symbols-outlined" style="padding-right: 10px"> settings_account_box </span>
+        </a>
+        {% endif %}
 
             <a href="/main" style="color: black">
                 <span class="material-icons" style="padding-right: 10px"> home</span>
