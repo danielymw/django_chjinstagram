@@ -14,6 +14,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Permission</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,7 @@
                             <td>{{ user.nickname }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.password }}</td>
+                            <td>{{ user.permission }}</td>
                         </tr>
                     {% endif %}
                 {% else %}
@@ -33,11 +35,12 @@
                         <td>{{ user.nickname }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.password }}</td>
+                        <td>{{ user.permission }}</td>
                     </tr>
                 {% endif %}
             {% empty %}
                 <tr>
-                    <td colspan="4">No users found.</td>
+                    <td colspan="5">No users found.</td>
                 </tr>
             {% endfor %}
         </tbody>
