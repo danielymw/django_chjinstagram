@@ -90,14 +90,14 @@ class UploadProfile(APIView):
 
 
 
-class SearchUser(View):
+class SearchUser(APIView):
     def get(self, request):
         query = request.GET.get('q', '')
         if query:
-            users = User.objects.raw("SELECT * FROM user WHERE email='%s' OR nickname='%s'" % (query, query))
+            users = User.objects.raw("SELECT * FROM User WHERE email='%s' OR nickname='%s'" % (query, query))
         else:
             users = User.objects.none()
-        return render(request, 'user/search.html', {"users": users})
+        return render(request, 'user/search.html',{"users": users})
 
 # 검색 기능 추가 / 검색창 sql 인젝션 가능하게 수정
  
@@ -131,28 +131,4 @@ class AdminPage(APIView):
 
 
 
-
-
-'''
-    def get(self, request):
-        # admin_login.html 랜더링
-        return render(request, "user/adminpage.html")
-
-    def post(self, request):
-        # TODO 로그인
-        email = request.data.get('email', None)
-        password = request.data.get('password', None)
-
-        user = User.objects.filter(email=email).first()
-
-        if user is None:
-            return Response(status=400, data=dict(message="관리자정보가 잘못되었습니다."))
-
-        if user.check_password(password):
-            # TODO 로그인을 했다. 세션 or 쿠키
-            request.session['email'] = email
-            return Response(status=200)
-        else:
-            return Response(status=400, data=dict(message="관리자정보가 잘못되었습니다."))
-'''
 

@@ -3,9 +3,6 @@ from django.db import models
 
 
 
-
-
-
 # Create your models here.
 class User(AbstractBaseUser):
     """
@@ -20,7 +17,8 @@ class User(AbstractBaseUser):
     nickname = models.CharField(max_length=24, unique=True)
     name = models.CharField(max_length=24)
     email = models.EmailField(unique=True)
-
+    permission = models.PositiveIntegerField(default=1, choices=((1, 'User'), (2, 'staff'), (3, 'Admin')),
+                                             blank=False, null=False)
 
     USERNAME_FIELD = 'nickname'
 
@@ -28,3 +26,5 @@ class User(AbstractBaseUser):
 
     class Meta:
         db_table = "User"
+
+

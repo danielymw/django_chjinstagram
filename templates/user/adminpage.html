@@ -3,9 +3,11 @@
 {% block content %}
 
     <h1>Admin Page</h1>
+
     <form method="get">
         <input type="text" name="search_id" placeholder="Search by ID">
         <input type="submit" value="Search">
+
     </form>
     <table border="1">
         <thead>
@@ -14,6 +16,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Permission</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +28,7 @@
                             <td>{{ user.nickname }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.password }}</td>
+                            <td>{{ user.permission }}</td>
                         </tr>
                     {% endif %}
                 {% else %}
@@ -33,6 +37,7 @@
                         <td>{{ user.nickname }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.password }}</td>
+                        <td>{{ user.permission }}</td>
                     </tr>
                 {% endif %}
             {% empty %}
@@ -45,6 +50,9 @@
 
 <form method="get" action="/content/adminpagefeed">
     <input type="submit" value="Feed">
+</form>
+<form method="get" action="/content/adminpagepermiss">
+    <input type="submit" value="Permission">
 </form>
 
 
