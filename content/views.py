@@ -6,11 +6,8 @@ from .models import Feed, Reply, Like, Bookmark
 from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
-from django.http import FileResponse
-from django.views.generic import View
 from django.http import HttpResponse
-from django.conf import settings
-from django.http import HttpResponse, Http404
+from django.http import FileResponse
 
 # 메인 페이지
 class Main(APIView):
@@ -316,6 +313,33 @@ class feedDelete(APIView):
         return redirect('main')
         #else:
             #return Response(status=404)
+
+# 파일 다운로드 기능
+class feedDownload(APIView):
+    def get(self, request, pk):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
+        feed = get_object_or_404(Feed, id=pk)
+
+        # 파일이 저장된 경로와 파일 이름을 설정합니다.
+        file_path = os.path.join(MEDIA_ROOT, feed.image)
+        file_name = os.path.basename(file_path)
+
+        # 파일을 response에 담아서 다운로드 시킵니다.
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f, content_type='application/octet-stream')
+            response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+            return response
+
+
 
 
 

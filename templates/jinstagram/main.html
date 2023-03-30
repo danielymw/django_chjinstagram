@@ -89,7 +89,8 @@
 
         <form method="get" action="{% url 'user-search' %}">
             <div style="display:flex;">
-                <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search">
+                <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search" style="width: 450px;">
+                <!-- 위의 코드에서 width 값을 원하는 크기로 수정해주세요. -->
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </div>
         </form>

@@ -19,3 +19,4 @@ class Sub(APIView):
                 'data': id,
             }
             return render(request, 'main/parameter.html', data)
+

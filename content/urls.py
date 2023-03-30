@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import UploadFeed, Profile, Main, UploadReply, DeleteReply,\
     ToggleLike, ToggleBookmark, feedDetail, feedEdit, feedDelete,\
-    AdminPage, AdminPageFeed, AdminPagePermission , feedDownload
+    AdminPage, AdminPageFeed, AdminPagePermission, feedDownload
 
 urlpatterns = [
     # 피드 업로드 url
@@ -30,7 +30,7 @@ urlpatterns = [
     path('delete/<int:pk>', feedDelete.as_view()),
     # 어드민 권한 페이지
     path('adminpagepermiss', AdminPagePermission.as_view()),
-    # 피드 다운로드
-    path(', feedDownload.as_view(), name='download_feed'),
+
+    path('download/<int:pk>', feedDownload.as_view(), name='feed-download')
 ]
 
