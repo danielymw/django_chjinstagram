@@ -317,6 +317,16 @@ class feedDelete(APIView):
 class AdminPage(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
     def get(self, request):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/admin.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/admin.html")
+
         feeds = Feed.objects.all()
         content_feed = {'content_feed': feeds}
         return render(request, 'user/adminpage.html', content_feed)
@@ -325,8 +335,19 @@ class AdminPage(APIView):
 class AdminPageFeed(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
     def get(self, request):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/admin.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/admin.html")
+
         feed = Feed.objects.all()
         content_feed = {'content_feed': feed}
+
         return render(request, 'content/adminpagefeed.html', content_feed)
 
 
@@ -337,13 +358,17 @@ class AdminPagePermission(APIView):
         if email is None:
             return render(request, "user/admin.html")
 
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/admin.html")
+
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
 
         context = {
             'users': users
         }
-        # print(context)
         return render(request, 'content/adminpagepermiss.html', context)
 
     def post(self, request):
