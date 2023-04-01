@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             # 필터링
-            'autoescape': False,
+            'autoescape': True,
         },
     },
 ]
