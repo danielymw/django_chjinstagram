@@ -378,7 +378,7 @@ class AdminPagePermission(APIView):
         # 옵션 값 가져오기
         user_name=request.data.get('user_name')
         # 옵션 사용자 필터링
-        user= User.objects.filter(name=user_name).first()
+        user = User.objects.filter(name=user_name).first()
 
         print(user)
 
