@@ -85,7 +85,7 @@
         <a class="navbar-brand" href="/main"><img style="width: 100px"
                                                  src="/media/logo.png">
         </a>
-        <input class="form-control me-2" style="width: 400px" type="search" placeholder="Search" aria-label="Search">
+
         <div style="display: flex">
             <a href="/main" style="color: black"><span class="material-icons"
                                                       style="padding-right: 10px"> home</span></a>
@@ -139,11 +139,14 @@
                             </div>
                             </a>
                             <ul class="dropdown-menu" style="left:-100px" aria-labelledby="dropdownMenuLink2">
+                                <li><a class="dropdown-item" id="download_feed" style="width: 160px;color: cornflowerblue; font-weight: bold" href="{% url 'feed-download' feed.id %}">다운로드</a></li>
+                                 <hr class="dropdown-divider">
                                 <li><a class="dropdown-item" id="edit_feed" style="width: 160px;color: cornflowerblue; font-weight: bold" onclick="location.href='/content/edit/{{ feed.id }}'">수정</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li><a class="dropdown-item" id="delete_feed" style="width: 160px;color: cornflowerblue; font-weight: bold" onclick="location.href='/content/delete/{{ feed.id }}'">삭제</a></li>
+
                             </ul>
                         </div>
                         {% endif %}
@@ -342,7 +345,8 @@
                 alert("댓글 성공");
                 $("#reply_list_" + feed_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.nickname }}</b> " + reply_content + "</div>")
                 {#location.replace('/main');#}
-
+                // 페이지 새로고침
+                location.reload();
             },
             error: function (request, status, error) {
                 console.log("에러");
