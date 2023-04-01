@@ -27,7 +27,6 @@ User = get_user_model()
 urlpatterns = [
     # 그냥 링크 검색 시 자동으로 main으로 가게 함.
     path('', RedirectView.as_view(url='/main')),
-    path('admin/', admin.site.urls),
     path('main/', Main.as_view()),
     path('content/', include('content.urls')),
     path('user/', include('user.urls')),
