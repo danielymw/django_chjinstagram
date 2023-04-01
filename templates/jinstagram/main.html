@@ -149,8 +149,13 @@
             <div class="feed_box" >
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
-                        <img class="profile"
-                             src="{% get_media_prefix %}{{ feed.profile_image }}">
+
+                            <img class="profile"
+                                 src="{% get_media_prefix %}{{ feed.profile_image }}">
+
+
+
+
                     </div>
                     <div>
                         {{ feed.nickname }}
@@ -498,6 +503,7 @@
     $(".modal_close").click(function () {
         $('#first_modal').css({
             display: 'none'
+
         });
         $('#second_modal').css({
             display: 'none'
