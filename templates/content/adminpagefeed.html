@@ -1,31 +1,113 @@
-{% extends 'content/base.html' %}
-{% load static %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <title>Feed</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 전체 스타일 */
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f8f8f8;
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            text-align: center;
+            margin: 50px 0;
+            font-size: 36px;
+            color: #333;
+        }
+
+        /* 피드 테이블 스타일 */
+        .feed-table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%; /* 테이블 전체 너비 */
+            max-width: 800px;
+        }
+
+        .feed-table th,
+        .feed-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .feed-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+            border-top: 2px solid #ddd;
+        }
+
+        /* 이미지 스타일 */
+        .feed-image {
+            display: block;
+            max-width: 100px;
+            max-height: 100px;
+            margin: 0 auto;
+        }
+
+        /* 모바일 화면에서는 테이블 각 셀이 아래로 쌓이도록 함 */
+        @media (max-width: 768px) {
+            .feed-table {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feed-table th,
+            .feed-table td {
+                display: block;
+                width: 100%;
+                border: none;
+            }
+
+            .feed-table td {
+                padding: 10px 0;
+            }
+
+            .feed-table td:first-child {
+                margin-top: 10px;
+            }
+
+            .feed-image {
+                max-width: 100px;
+                max-height: 100px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<header>
     <h1>Feed</h1>
+</header>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Content</th>
-                <th>Email</th>
-                <th>Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for feed in content_feed %}
+<table class="feed-table">
+    <thead>
+    <tr>
+        <th>Content</th>
+        <th>Email</th>
+        <th>Image</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for feed in content_feed %}
+    <tr>
+        <td>{{ feed.content }}</td>
+        <td>{{ feed.email }}</td>
+        <td><img src="{% get_media_prefix %}{{ feed.image }}" class="feed-image"></td>
+    </tr>
+    {% endfor %}
+    </tbody>
 
-                <tr>
-                    <td>{{ feed.content }}</td>
-                    <td>{{ feed.email }}</td>
-                    <td><img src="{% get_media_prefix %}{{ feed.image }}" width="500"></td>
-                <!--어드민 피드 html에서 사진 이미지로 출력되게 -->
-                </tr>
-
-
-            {% endfor %}
-        </tbody>
-    </table>
-
-
-
-{% endblock %}
+</table>
+</body>
+</html>

@@ -413,4 +413,4 @@ class AdminPagePermission(APIView):
             return Response(status=200)
         else:
             return render(request, "user/admin.html")
-
+        return render(request, 'content/adminpagepermiss.html')
