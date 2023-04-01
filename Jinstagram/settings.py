@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             # 필터링
-            'autoescape': True,
+            'autoescape': False,
         },
     },
 ]
@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'NAME': os.environ.get('MYSQL_DB_NAME', 'team4'),
+        'NAME': os.environ.get('MYSQL_DB_NAME', 'team'),
         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'dlcksgml123!'),
         'PORT': '3306',
