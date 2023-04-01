@@ -78,15 +78,10 @@
 
 
         $('#permission_edit').click(function () {
-            alert("수정 완료");
-
             var user = document.getElementById('user_email');
             user_email = user.options[user.selectedIndex].text;
             var permission = document.getElementById('user_permission');
             user_permission = permission.options[permission.selectedIndex].value;
-
-
-
 
             $.ajax({
                 url: "/content/adminpagepermiss" ,
@@ -101,10 +96,12 @@
                     location.replace('/user/adminpage');
                 },
                 error: function (request, status, error) {
-                    alert("에러");
+                    let message = request.responseText; // 서버에서 반환한 메시지
+                    alert(request.responseJSON.message);
+                    location.replace('/main');
                 },
                 complete: function () {
-                    alert("완료");
+                    console.log("성공");
                 }
             });
         });

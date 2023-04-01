@@ -413,8 +413,5 @@ class AdminPagePermission(APIView):
 
             return Response(status=200)
         else:
-            return render(request, "user/admin.html")
+            return Response(status=400, data=dict(message="관리자가 아닙니다."))
 
-            return Response(status=200)
-        else:
-            return render(request, "user/admin.html")

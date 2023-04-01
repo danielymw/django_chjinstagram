@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="/media/pabicon.png">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,11 +64,13 @@
             method: "POST",
             success: function (data) {
                console.log("Success");
-               alert("Admin login successful");
+               alert("관리자 페이지에 접속했습니다.");
                location.replace('/user/adminpage');
             },
             error: function (request, status, error) {
                 console.log("error");
+                let message = request.responseText; // 서버에서 반환한 메시지
+                alert(request.responseJSON.message);
             },
             complete: function () {
                 console.log("Complete");
