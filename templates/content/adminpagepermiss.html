@@ -2,27 +2,75 @@
 {% load static %}
 
 {% block content %}
-<!-- Jquery -->
+    <!-- Jquery -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <h1>Admin Page</h1>
+    <h1 class="admin-header">Admin Permission Page</h1>
 
-    <form method="post">
-      <label for="user_email">User ID:</label>
-      <select id="user_email" name="user_email">
-        {% for user in users %}
-          <option value="user_email">{{ user.email }}</option>
-        {% endfor %}
-      </select>
+    <style>
+        .admin-header {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #5d6975;
+        }
 
-      <label for="user_permission">Permission:</label>
-      <select id="user_permission" name="user_permission">
-        <option value="3">Admin</option>
-        <option value="2">Staff</option>
-        <option value="1">User</option>
-      </select>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      <button id="permission_edit">Submit</button>
+        label {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #5d6975;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #424f5b;
+        }
+
+    </style>
+
+
+
+    <form method="post" >
+        <label for="user_email" >User ID:</label>
+        <select id="user_email" name="user_email">
+            {% for user in users %}
+                <option value="user_email">{{ user.email }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="user_permission">Permission:</label>
+        <select id="user_permission" name="user_permission">
+            <option value="3">Admin</option>
+            <option value="2">Staff</option>
+            <option value="1">User</option>
+        </select>
+
+        <button id="permission_edit">Submit</button>
 
     </form>
 
@@ -40,27 +88,27 @@
 
 
 
-        $.ajax({
-            url: "/content/adminpagepermiss" ,
-            data: {
-                user_email : user_email,
-                user_permission : user_permission,
-            },
-            method: "POST",
-            success: function (data) {
-                console.log("성공");
-                alert("권한을 수정하였습니다.");
-                location.replace('/user/adminpage');
-            },
-            error: function (request, status, error) {
-                alert("에러");
-            },
-            complete: function () {
-                alert("완료");
-            }
+            $.ajax({
+                url: "/content/adminpagepermiss" ,
+                data: {
+                    user_email : user_email,
+                    user_permission : user_permission,
+                },
+                method: "POST",
+                success: function (data) {
+                    console.log("성공");
+                    alert("권한을 수정하였습니다.");
+                    location.replace('/user/adminpage');
+                },
+                error: function (request, status, error) {
+                    alert("에러");
+                },
+                complete: function () {
+                    alert("완료");
+                }
+            });
         });
-    });
 
-  </script>
+    </script>
 
 {% endblock %}
