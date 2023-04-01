@@ -342,6 +342,8 @@ class feedDownload(APIView):
 
 
 
+
+
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
@@ -384,3 +386,7 @@ class AdminPagePermission(APIView):
         user.save()
 
         return render(request, 'content/adminpagepermiss.html', {'users': users})
+
+# WJ 다운로드 피드 만들기
+
+

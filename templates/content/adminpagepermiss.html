@@ -28,8 +28,9 @@
 
     <script>
 
+
         $('#permission_edit').click(function () {
-            alert("수정하기 눌렀다.");
+            alert("수정 완료");
 
             var user = document.getElementById('user_name');
             user_name = user_name.options[user_name.selectedIndex].text;
@@ -37,6 +38,9 @@
             user_permission = permission.options[permission.selectedIndex].value;
             alert(user_name);
             alert(user_permission);
+
+
+
 
         $.ajax({
             url: "/content/adminpagepermiss" ,

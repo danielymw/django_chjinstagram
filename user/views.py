@@ -114,6 +114,7 @@ class Admin(APIView):
         # TODO Login
         email = request.data.get('email', None)
         password = request.data.get('password', None)
+        permission = request.data.get('permission', None)
 
         user = User.objects.filter(email=email).first()
 
@@ -126,6 +127,7 @@ class Admin(APIView):
                 return Response(status=200)
             else:
                 return Response(status=400, data=dict(message="잘못된 접근입니다."))
+
 
 
 
