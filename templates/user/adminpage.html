@@ -1,0 +1,194 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+
+    <h1 class="admin-header">Admin Page</h1>
+
+    <div class="search-container">
+        <form method="get">
+            <input type="text" name="search_id" placeholder="Search by ID">
+            <input type="submit" value="Search">
+        </form>
+
+    </div>
+    <style>
+        .admin-header {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #5d6975;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+            margin-right: 10px;
+            width: 400px;
+        }
+
+        .search-container input[type="submit"] {
+            background-color: #5d6975;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container input[type="submit"]:hover {
+            background-color: #4c5a64;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .button-container form {
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+
+
+        /* CSS for the table */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+        .table-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin-bottom: 30px;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            border: none;
+            text-align: center;
+        }
+        th {
+            background-color: #5d6975;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 12px;
+        }
+        td {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:nth-child(even) td {
+            background-color: #e7e7e7;
+        }
+        tr:hover td {
+            background-color: #f5f5f5;
+        }
+        .no-results {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* CSS for the buttons */
+        form {
+            display: inline-block;
+            margin-right: 10px;
+
+        }
+        input[type="submit"] {
+            background-color: #5d6975;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45525e;
+        }
+
+    </style>
+
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Num</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Permission</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                {% if search_id is not none and user.id == search_id %}
+                    <tr style="background-color: #ffd967;">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.password }}</td>
+                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.password }}</td>
+                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                    </tr>
+                {% endif %}
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="no-results">No users found.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="button-container">
+        <form method="get" action="/content/adminpagefeed">
+            <input type="submit" value="Feed">
+        </form>
+
+        <form method="get" action="/content/adminpagepermiss">
+            <input type="submit" value="Permission">
+        </form>
+    </div>
+
+
+{% endblock %}

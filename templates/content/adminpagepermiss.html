@@ -1,0 +1,111 @@
+{% extends 'content/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Jquery -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <h1 class="admin-header">Admin Permission Page</h1>
+
+    <style>
+        .admin-header {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #5d6975;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #5d6975;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #424f5b;
+        }
+
+    </style>
+
+
+
+    <form method="post" >
+        <label for="user_email" >User ID:</label>
+        <select id="user_email" name="user_email">
+            {% for user in users %}
+                <option value="user_email">{{ user.email }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="user_permission">Permission:</label>
+        <select id="user_permission" name="user_permission">
+            <option value="3">Admin</option>
+            <option value="2">Staff</option>
+            <option value="1">User</option>
+        </select>
+
+        <button id="permission_edit">Submit</button>
+
+    </form>
+
+    <script>
+
+
+        $('#permission_edit').click(function () {
+            var user = document.getElementById('user_email');
+            user_email = user.options[user.selectedIndex].text;
+            var permission = document.getElementById('user_permission');
+            user_permission = permission.options[permission.selectedIndex].value;
+
+            $.ajax({
+                url: "/content/adminpagepermiss" ,
+                data: {
+                    user_email : user_email,
+                    user_permission : user_permission,
+                },
+                method: "POST",
+                success: function (data) {
+                    console.log("성공");
+                    alert("권한을 수정하였습니다.");
+                    location.replace('/user/adminpage');
+                },
+                error: function (request, status, error) {
+                    let message = request.responseText; // 서버에서 반환한 메시지
+                    alert(request.responseJSON.message);
+                    location.replace('/main');
+                },
+                complete: function () {
+                    console.log("성공");
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}

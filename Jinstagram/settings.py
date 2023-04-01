@@ -44,13 +44,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'Jinstagram.urls'
@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            # 필터링
+            'autoescape': False,
         },
     },
 ]
@@ -78,17 +80,30 @@ WSGI_APPLICATION = 'Jinstagram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# mysql 연결
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'NAME': 'youtube_devops',
-        'USER': os.environ.get('MYSQL_USER_NAME', 'default_user'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'default_password'),
+        'NAME': os.environ.get('MYSQL_DB_NAME', 'Team4'),
+        'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'dlcksgml123!'),
         'PORT': '3306',
-        'OPTIONS': {'charset': 'utf8mb4'},
+        'OPTIONS': {'charset': 'utf8mb3'},
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'HOST': os.environ.get('MYSQL_HOST', '43.201.26.170'),
+#         'NAME': os.environ.get('MYSQL_DB_NAME', 'djangoinsta'),
+#         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
+#         'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'password'),
+#         'PORT': '3306',
+#         'OPTIONS': {'charset': 'utf8mb4'},
+#     }
+# }
 
 
 # Password validation
@@ -144,4 +159,21 @@ MEDIA_URL = '/media/' # 항상 / 로 끝나도록 설정
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 커스텀 유저 모델 사용
+
 AUTH_USER_MODEL = 'user.User'
+
+
+# WJ CSRF 안나오게함.
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+
+# 세션 <script>alert(document.cookie)</script> 되게 옵션 False
+SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SECURE = False
+
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_BROWSER_XSS_FILTER = False
+
+X_FRAME_OPTIONS = 'ALLOW-FROM'
+

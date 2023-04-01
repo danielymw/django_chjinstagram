@@ -2,6 +2,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
 
+
 # Create your models here.
 class User(AbstractBaseUser):
     """
@@ -11,12 +12,19 @@ class User(AbstractBaseUser):
         유저 이메일주소 -> 회원가입할때 사용하는 아이디
         유저 비밀번호 -> 디폴트 쓰자
     """
+    objects = None
     profile_image = models.TextField()  # 프로필 이미지
     nickname = models.CharField(max_length=24, unique=True)
     name = models.CharField(max_length=24)
     email = models.EmailField(unique=True)
+    permission = models.PositiveIntegerField(default=1, choices=((1, 'User'), (2, 'staff'), (3, 'Admin')),
+                                             blank=False, null=False)
 
     USERNAME_FIELD = 'nickname'
 
+
+
     class Meta:
         db_table = "User"
+
+
