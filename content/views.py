@@ -6,6 +6,7 @@ from .models import Feed, Reply, Like, Bookmark
 from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
+from django.http import HttpResponse, FileResponse
 
 # 메인 페이지
 class Main(APIView):
@@ -242,7 +243,7 @@ class feedDetail(APIView):
             'is_marked': is_marked,
             'feed_session_check': feed_session_check,
         }
-        # print(context)
+
         return render(request, 'content/feedDetail.html',  context)
 
 # 피드 수정
@@ -285,9 +286,6 @@ class feedEdit(APIView):
 
         # feed.image = uuid_name
         feed.content = request.data.get('content')
-        print(request.data)
-        # feed.email = request.session.get('email', None)
-        #
         feed.save()
 
         return redirect('main')
@@ -312,6 +310,30 @@ class feedDelete(APIView):
         #else:
             #return Response(status=404)
 
+# 파일 다운로드 기능
+class feedDownload(APIView):
+    def get(self, request, pk):
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+
+        feed = get_object_or_404(Feed, id=pk)
+
+        # 파일이 저장된 경로와 파일 이름을 설정합니다.
+        file_path = os.path.join(MEDIA_ROOT, feed.image)
+        file_name = os.path.basename(file_path)
+
+        # 파일을 response에 담아서 다운로드 시킵니다.
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f, content_type='application/octet-stream')
+            response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+            return response
 
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
@@ -329,8 +351,8 @@ class AdminPage(APIView):
 
         feeds = Feed.objects.all()
         content_feed = {'content_feed': feeds}
-        return render(request, 'user/adminpage.html', content_feed)
 
+        return render(request, 'user/adminpage.html', content_feed)
 
 class AdminPageFeed(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
@@ -379,19 +401,6 @@ class AdminPagePermission(APIView):
 
         user = User.objects.filter(email=email).first()
 
-        # 옵션 값 가져오기
-        # user_email = request.data.get('user_email')
-        # user_per = User.objects.filter(email=user_email).first()
-        # user_per.permission = request.data.get('user_permission')
-        # user_per.save()
-            # 옵션 사용자 필터링
-        # user_permission = User.objects.filter(email=user_email).first()
-        # user_permission.permission = request.data.get('user_permission')
-        # print(user_permission)
-        # user_permission.save()
-
-        #return render(request, 'content/adminpagepermiss.html')
-
         if user.permission == 3:
             # 옵션 값 가져오기
             user_email = request.data.get('user_email')
@@ -404,6 +413,4 @@ class AdminPagePermission(APIView):
             return Response(status=200)
         else:
             return render(request, "user/admin.html")
-
-
 

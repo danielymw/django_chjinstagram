@@ -66,6 +66,8 @@
             },
             error: function (request, status, error) {
                 console.log("에러");
+                let message = request.responseText; // 서버에서 반환한 메시지
+                alert(request.responseJSON.message);
             },
             complete: function () {
                 console.log("완료");

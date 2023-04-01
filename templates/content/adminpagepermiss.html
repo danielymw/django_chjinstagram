@@ -28,13 +28,17 @@
 
     <script>
 
+
         $('#permission_edit').click(function () {
-            alert("수정하기 눌렀다.");
+            alert("수정 완료");
 
             var user = document.getElementById('user_email');
             user_email = user.options[user.selectedIndex].text;
             var permission = document.getElementById('user_permission');
             user_permission = permission.options[permission.selectedIndex].value;
+
+
+
 
         $.ajax({
             url: "/content/adminpagepermiss" ,
