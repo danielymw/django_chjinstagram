@@ -144,7 +144,7 @@
 
 <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
     <div style="width: 500px;min-width: 500px;margin-right: 300px">
-
+        {% csrf_token %}
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
             <div class="feed_box" >
