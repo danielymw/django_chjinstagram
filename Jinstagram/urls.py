@@ -19,7 +19,7 @@ from content.views import Main, UploadFeed
 from .settings import MEDIA_URL, MEDIA_ROOT
 from django.conf.urls.static import static
 from django.contrib.auth import get_user_model
-from . import views
+from .views import index
 from django.views.generic import RedirectView
 User = get_user_model()
 
@@ -30,6 +30,7 @@ urlpatterns = [
     path('main/', Main.as_view()),
     path('content/', include('content.urls')),
     path('user/', include('user.urls')),
+    path('index/', index, name='index'),
 ]
 
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
