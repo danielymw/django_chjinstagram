@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index of {{ request.path }}</title>
+</head>
+<body>
+    <h1>Index of {{ request.path }}</h1>
+    <ul>
+        {% for file in files %}
+            <li><a href="{{ file }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

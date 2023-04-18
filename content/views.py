@@ -6,7 +6,7 @@ from .models import Feed, Reply, Like, Bookmark
 from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 
 # 메인 페이지
 class Main(APIView):
@@ -373,6 +373,7 @@ class AdminPageFeed(APIView):
         return render(request, 'content/adminpagefeed.html', content_feed)
 
 
+
 class AdminPagePermission(APIView):
     def get(self, request):
         email = request.session.get('email', None)
@@ -402,15 +403,16 @@ class AdminPagePermission(APIView):
         user = User.objects.filter(email=email).first()
 
         if user.permission == 3:
+
             # 옵션 값 가져오기
-            user_email = request.data.get('user_email')
+            user_email = request.POST.get('user_email', None)
 
             # 옵션 사용자 필터링
             user_permission = User.objects.filter(email=user_email).first()
-            user_permission.permission = request.data.get('user_permission')
+            user_permission.permission = request.POST.get('user_permission')
             user_permission.save()
 
-            return Response(status=200)
+            return JsonResponse({"message": "권한이 수정되었습니다."}, status=200)
         else:
-            return render(request, "user/admin.html")
-        return render(request, 'content/adminpagepermiss.html')
+            return JsonResponse({"message": "관리자가 아닙니다."}, status=400)
+

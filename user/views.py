@@ -5,6 +5,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
+from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from Jinstagram.settings import MEDIA_ROOT
 from django.db.models import Q, Prefetch
@@ -59,7 +60,12 @@ class Login(APIView):
 class LogOut(APIView):
     def get(self, request):
         request.session.flush()
-        return render(request, "user/login.html")
+
+        # 쿠키에서 CSRF 토큰 삭제
+        response = render(request, "user/login.html")
+        response.delete_cookie('csrftoken')
+
+        return response
 
 # 프로필 사진업로드로 파일 업로드 취약점 만들려면 고쳐야되는 코드
 class UploadProfile(APIView):

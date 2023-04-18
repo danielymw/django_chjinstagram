@@ -4,6 +4,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="/media/pabicon.png">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +24,7 @@
     <!-- Jquery -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <title>Hello, world!</title>
+    <title>CHJinstagram</title>
 
     <style>
         .box {
@@ -91,7 +92,7 @@
             <div style="display:flex;">
                 <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search" style="width: 450px;">
                 <!-- 위의 코드에서 width 값을 원하는 크기로 수정해주세요. -->
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-outline-success" type="submit" style="background-color: #75aade; border-color: #fae2a0;color: white;">Search</button>
             </div>
         </form>
 
@@ -143,14 +144,19 @@
 
 <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
     <div style="width: 500px;min-width: 500px;margin-right: 300px">
-
+        {% csrf_token %}
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
             <div class="feed_box" >
                 <div style="display: flex;flex-direction: row; align-items: center; margin: 20px">
                     <div class="box" style="width: 35px; height: 35px">
-                        <img class="profile"
-                             src="{% get_media_prefix %}{{ feed.profile_image }}">
+
+                            <img class="profile"
+                                 src="{% get_media_prefix %}{{ feed.profile_image }}">
+
+
+
+
                     </div>
                     <div>
                         {{ feed.nickname }}
@@ -294,7 +300,7 @@
             <div style="display: flex; flex-direction: row">
                 <div class="box" style="width: 35px; height: 35px">
                     <img class="profile"
-                         src="/media/3P.jpg">
+                         src="/media/3P.png">
                 </div>
                 <div style="margin-left: 10px; text-align: left">
                     <div style="font-weight: bold;font-size: 14px">
@@ -498,6 +504,7 @@
     $(".modal_close").click(function () {
         $('#first_modal').css({
             display: 'none'
+
         });
         $('#second_modal').css({
             display: 'none'

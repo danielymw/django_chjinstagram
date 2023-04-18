@@ -1,188 +1,194 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
-<head>
-    <title>User List</title>
-    <style>
-/* Set a default font family and size */
-body {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  background-color: #f2f2f2;
-}
-/* Center the main content area */
-.content {
-max-width: 800px;
-margin: 0 auto;
-background-color: #fff;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-}
+{% extends 'user/base.html' %}
 
-/* Style the heading */
-h1 {
-text-align: center;
-margin-top: 40px;
-margin-bottom: 20px;
-font-weight: 500;
-color: #2c3e50;
-}
+{% block content %}
 
-label {
-margin-right: 10px;
-font-weight: bold;
-color: #2c3e50;
-}
+    <h1 class="admin-header">Admin Page</h1>
 
-input[type="text"] {
-padding: 8px;
-border-radius: 5px;
-border: 1px solid #ccc;
-font-size: 16px;
-color: #2c3e50;
-}
+    <div class="search-container">
+        <form method="get">
+            <input type="text" name="search_id" placeholder="Search by ID">
+            <input type="submit" value="Search">
+        </form>
 
-button[type="submit"] {
-background-color: #2c3e50;
-color: #fff;
-border: none;
-padding: 8px 16px;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s ease;
-font-size: 16px;
-text-transform: uppercase;
-}
-
-button[type="submit"]:hover {
-background-color: #1a252e;
-}
-
-/* Style the table */
-table {
-border-collapse: collapse;
-width: 100%;
-font-size: 16px;
-}
-
-th, td {
-padding: 12px 16px;
-text-align: left;
-}
-
-th {
-background-color: #2c3e50;
-color: #fff;
-font-weight: bold;
-text-transform: uppercase;
-}
-
-tr:nth-child(even) {
-background-color: #f2f2f2;
-}
-
-/* Style the feed and permission buttons */
-.content form:not(:last-of-type) {
-margin-right: 20px;
-}
-
-input[type="submit"] {
-background-color: #2c3e50;
-color: #fff;
-border: none;
-padding: 8px 16px;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s ease;
-font-size: 16px;
-text-transform: uppercase;
-}
-
-input[type="submit"]:hover {
-background-color: #1a252e;
-}
-
-.content form {
-display: inline-block;
-position: absolute;
-bottom: 20px;
-}
-
-.content form:first-of-type {
-right: 30px;
-}
-
-.content form:last-of-type {
-right: 150px;
-}
-
-.content form input[type="submit"] {
-margin-left: 10px;
-}
-
-/* Style the error message */
-.error {
-color: red;
-margin-top: 10px;
-}
-</style>
-</head>
-<body>
-
-<div class="content">
-    <h1>User List</h1>
-
-    <div id="search" align="center">
-        <label for="search_id">Search by ID:</label>
-        <input type="text" name="search_id" id="search_id" placeholder="Enter user ID">
-        <button type="submit">Search</button>
     </div>
-    <br>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Permission</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-        {% if search_id is not none %}
-        {% if user.id == search_id %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.password }}</td>
-            <td>{{ user.permission }}</td>
-        </tr>
-        {% endif %}
-        {% else %}
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.password }}</td>
-            <td>{{ user.permission }}</td>
-        </tr>
-        {% endif %}
-        {% empty %}
-        <tr>
-            <td colspan="5">No users found.</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <style>
+        .admin-header {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #5d6975;
+        }
 
-    <form method="get" action="/content/adminpagefeed" style="position: absolute; bottom: 20px; right: 150px;">
-    <input type="submit" value="Feed">
-</form>
-<form method="get" action="/content/adminpagepermiss" style="position: absolute; bottom: 20px; right: 20px;">
-    <input type="submit" value="Permission">
-</form>
-</div>
-</body>
-</html>
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+            margin-right: 10px;
+            width: 400px;
+        }
+
+        .search-container input[type="submit"] {
+            background-color: #5d6975;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container input[type="submit"]:hover {
+            background-color: #4c5a64;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .button-container form {
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+
+
+        /* CSS for the table */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+        .table-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            margin-bottom: 30px;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            border: none;
+            text-align: center;
+        }
+        th {
+            background-color: #5d6975;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 12px;
+        }
+        td {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:nth-child(even) td {
+            background-color: #e7e7e7;
+        }
+        tr:hover td {
+            background-color: #f5f5f5;
+        }
+        .no-results {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* CSS for the buttons */
+        form {
+            display: inline-block;
+            margin-right: 10px;
+
+        }
+        input[type="submit"] {
+            background-color: #5d6975;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 30px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45525e;
+        }
+
+    </style>
+
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Num</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Permission</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                {% if search_id is not none and user.id == search_id %}
+                    <tr style="background-color: #ffd967;">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.password }}</td>
+                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nickname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.password }}</td>
+                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                    </tr>
+                {% endif %}
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="no-results">No users found.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="button-container">
+        <form method="get" action="/content/adminpagefeed">
+            <input type="submit" value="Feed">
+        </form>
+
+        <form method="get" action="/content/adminpagepermiss">
+            <input type="submit" value="Permission">
+        </form>
+    </div>
+
+
+{% endblock %}
