@@ -8,6 +8,10 @@ import os
 from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
 
+#csrf
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 # 메인 페이지
 class Main(APIView):
     def get(self, request):
@@ -386,33 +390,19 @@ class AdminPagePermission(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
+        user_email = request.GET.get('user_email', None)
+        user_permission = request.GET.get('user_permission', None)
+
+        if user_email and user_permission and user.permission == 3:
+            target_user = User.objects.filter(email=user_email).first()
+            target_user.permission = user_permission
+            target_user.save()
+
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
 
         context = {
-            'users': users
+            'users': users,
+            'current_permission': user.permission,
         }
         return render(request, 'content/adminpagepermiss.html', context)
-
-    def post(self, request):
-        email = request.session.get('email', None)
-
-        if email is None:
-            return render(request, "user/admin.html")
-
-        user = User.objects.filter(email=email).first()
-
-        if user.permission == 3:
-
-            # 옵션 값 가져오기
-            user_email = request.POST.get('user_email', None)
-
-            # 옵션 사용자 필터링
-            user_permission = User.objects.filter(email=user_email).first()
-            user_permission.permission = request.POST.get('user_permission')
-            user_permission.save()
-
-            return JsonResponse({"message": "권한이 수정되었습니다."}, status=200)
-        else:
-            return JsonResponse({"message": "관리자가 아닙니다."}, status=400)
-
