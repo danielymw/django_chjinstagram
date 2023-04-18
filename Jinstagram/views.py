@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+import os
 User = get_user_model()
 
 class Sub(APIView):
@@ -19,4 +20,10 @@ class Sub(APIView):
                 'data': id,
             }
             return render(request, 'main/parameter.html', data)
+
+
+def index(request):
+    path = '.'
+    files = os.listdir(path)
+    return render(request, 'jinstagram/index.html', {'files': files})
 
