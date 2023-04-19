@@ -53,13 +53,11 @@
 
     </style>
 
-
-
-    <form method="post" >
-        <label for="user_email" >User ID:</label>
-        <select id="user_email" name="user_email">
+    <form id="adminlevel" method="get" action="/content/adminpagepermiss">
+        <label for="user_email">User ID:</label>
+        <select id="user_email" name="user_email" >
             {% for user in users %}
-                <option value="user_email">{{ user.email }}</option>
+                <option value="{{ user.email }}">{{ user.email }}</option>
             {% endfor %}
         </select>
 
@@ -70,45 +68,23 @@
             <option value="1">User</option>
         </select>
 
-        <button id="permission_edit">Submit</button>
+        <button id="permission_edit" type="button" onclick="submitForm()">Submit</button>
 
     </form>
 
     <script>
+        function submitForm() {
+            const user_email = document.getElementById("user_email").value;
+            const user_permission = document.getElementById("user_permission").value;
+            const current_permission = "{{ current_permission }}";
 
-
-        $('#permission_edit').click(function () {
-            alert("수정 완료");
-
-            var user = document.getElementById('user_email');
-            user_email = user.options[user.selectedIndex].text;
-            var permission = document.getElementById('user_permission');
-            user_permission = permission.options[permission.selectedIndex].value;
-
-
-
-
-            $.ajax({
-                url: "/content/adminpagepermiss" ,
-                data: {
-                    user_email : user_email,
-                    user_permission : user_permission,
-                },
-                method: "POST",
-                success: function (data) {
-                    console.log("성공");
-                    alert("권한을 수정하였습니다.");
-                    location.replace('/user/adminpage');
-                },
-                error: function (request, status, error) {
-                    alert("에러");
-                },
-                complete: function () {
-                    alert("완료");
-                }
-            });
-        });
-
+            if (user_email && user_permission && current_permission == 3) {
+                document.getElementById("adminlevel").submit();
+                alert("권한이 수정 되었습니다.");
+            } else {
+                alert("관리자가 아닙니다.");
+            }
+        }
     </script>
 
 {% endblock %}

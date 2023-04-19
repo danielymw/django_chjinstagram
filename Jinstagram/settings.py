@@ -44,14 +44,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
+    #'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'Jinstagram.urls'
@@ -86,9 +85,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'NAME': os.environ.get('MYSQL_DB_NAME', 'Team4'),
+        'NAME': os.environ.get('MYSQL_DB_NAME', 'team'),
         'USER': os.environ.get('MYSQL_USER_NAME', 'root'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'Zkalf2323!'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'check1234'),
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb3'},
     }
@@ -160,13 +159,14 @@ MEDIA_URL = '/media/' # 항상 / 로 끝나도록 설정
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 커스텀 유저 모델 사용
+
 AUTH_USER_MODEL = 'user.User'
 
 
 # WJ CSRF 안나오게함.
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
 
 # 세션 <script>alert(document.cookie)</script> 되게 옵션 False
 SESSION_COOKIE_HTTPONLY = False

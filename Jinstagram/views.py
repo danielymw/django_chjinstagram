@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+import os
 User = get_user_model()
 
 class Sub(APIView):
@@ -22,7 +22,8 @@ class Sub(APIView):
             return render(request, 'main/parameter.html', data)
 
 
-def my_view(request):
-    response = HttpResponse('Hello, world!')
-    response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    return response
+def index(request):
+    path = '.'
+    files = os.listdir(path)
+    return render(request, 'jinstagram/index.html', {'files': files})
+

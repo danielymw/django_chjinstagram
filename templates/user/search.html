@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="/media/pabicon.png">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +19,7 @@
     <!-- Jquery -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <title>Hello, world!</title>
+    <title>Search!</title>
 
     <style>
         .box {
@@ -67,6 +68,9 @@
             position: relative;
             padding: 10px;
         }
+        ul{
+            list-style: none;
+        }
     </style>
 </head>
 <body>
@@ -78,8 +82,8 @@
 
          <form method="get" action="{% url 'user-search' %}">
              <div style="display:flex;">
-                 <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search" value="{{ request.GET.q|default_if_none:'' }}">
-                 <button class="btn btn-outline-success" type="submit">Search</button>
+                 <input class="form-control me-2" type="search" name="q" placeholder="Search Users" aria-label="Search" style="width: 450px;" value="{{ request.GET.q|default_if_none:'' }}">
+                 <button class="btn btn-outline-success" type="submit" style="background-color: #75aade; border-color: #fae2a0;color: white;">Search</button>
              </div>
          </form>
 
@@ -90,17 +94,11 @@
         <div style="display: flex">
             <a href="/main" style="color: black"><span class="material-icons"
                                                       style="padding-right: 10px"> home</span></a>
-            <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-right: 10px">add_box</span>
 
             <div class="dropdown">
                 <a href="#" role="button" id="dropdownMenuLink"
                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="box" style="width: 25px; height: 25px">
 
-                        <img class="profile"
-                             src="{{ user.profile_image.url }}">
-
-                    </div>
                 </a>
 
                 <ul class="dropdown-menu" style="left:-158px" aria-labelledby="dropdownMenuLink">
@@ -124,11 +122,11 @@
       <ul>
           {% for user in users %}
               <li>
-                  <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}" style="max-width: 150px; height: auto;">
+                  <img class="profile" src="{% get_media_prefix %}{{ user.profile_image }}" style="max-width: 100px; height: auto;border-radius: 50%;">
               <!-- 프로필 사진 불러오기 -->
                   {{ user.nickname }}
-
               </li>
+              <br>
           {% empty %}
               <li>
                   No users found.

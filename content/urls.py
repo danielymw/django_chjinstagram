@@ -30,7 +30,7 @@ urlpatterns = [
     path('delete/<int:pk>', feedDelete.as_view()),
     # 어드민 권한 페이지
     path('adminpagepermiss', AdminPagePermission.as_view()),
-
+    # 피드 다운로드
     path('download/<int:pk>', feedDownload.as_view(), name='feed-download')
 
 ]
