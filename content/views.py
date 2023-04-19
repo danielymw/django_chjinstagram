@@ -8,10 +8,6 @@ import os
 from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
 
-#csrf
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-
 # 메인 페이지
 class Main(APIView):
     def get(self, request):
@@ -31,7 +27,7 @@ class Main(APIView):
 
         for feed in feed_object_list:
             writer = User.objects.filter(email=feed.email).first()
-            #
+
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
@@ -43,7 +39,7 @@ class Main(APIView):
             is_marked=Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
             feed_list.append(dict(id=feed.id,
                                   image=feed.image,
-                                  content=feed.content,
+                                  # content=feed.content,
                                   like_count=like_count,
                                   profile_image=writer.profile_image,
                                   nickname=writer.nickname,
