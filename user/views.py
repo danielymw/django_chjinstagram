@@ -17,7 +17,6 @@ from django.views import View
 from django.shortcuts import render
 from django.http import HttpResponse
 import time
-
 from django.core.cache import cache
 from datetime import timedelta
 
@@ -86,6 +85,8 @@ class Login(APIView):
         if failed_attempts >= 5:
             return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
 
+
+
         if user.check_password(password):
             # TODO login. session or cookie
             request.session['email'] = email
@@ -93,7 +94,7 @@ class Login(APIView):
             return Response(status=200)
         else:
             failed_attempts += 1
-            cache.set(failed_attempts_key, failed_attempts, timeout=timedelta(minutes=5))
+            cache.set(failed_attempts_key, failed_attempts, timeout=timedelta(minutes=5).total_seconds())
             return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
         # 비밀번호를 평문 그대로 검증하게 변경
 

@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-l!nhqf=$mq#60p-8=^-!)&n-j3n-a$nf7ag%h(jlevbanl08%9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 
@@ -62,7 +62,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates']
         ,
-        'APP_DIRS': True,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -161,6 +160,7 @@ MEDIA_URL = '/media/' # 항상 / 로 끝나도록 설정
 # 업로드된 파일을 저장할 디렉토리 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # 커스텀 유저 모델 사용
 
 AUTH_USER_MODEL = 'user.User'
@@ -173,7 +173,7 @@ CSRF_COOKIE_HTTPONLY = True
 
 # 세션 <script>alert(document.cookie)</script> 되게 옵션 False
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = True
+
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
