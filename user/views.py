@@ -12,7 +12,6 @@ from django.db.models import Q, Prefetch
 # Prefetch 추가
 from django.views import View
 
-
 # 회원가입
 class Join(APIView):
     def get(self, request):

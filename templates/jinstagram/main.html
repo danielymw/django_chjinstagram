@@ -144,7 +144,6 @@
 
 <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
     <div style="width: 500px;min-width: 500px;margin-right: 300px">
-        {% csrf_token %}
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
             <div class="feed_box" >
@@ -188,9 +187,9 @@
                 <div style="margin: 0 20px;text-align: left;font-size: 14px"> 춘식이 <b>외 {{ feed.like_count }}명</b>이
                     좋아합니다.
                 </div>
-                <div style="margin: 0 20px;text-align: left;font-size: 16px">
-                    <b>{{ feed.nickname }}</b> {{ feed.content }}
-                </div>
+<!--                <div style="margin: 0 20px;text-align: left;font-size: 16px">-->
+<!--                    <b>{{ feed.nickname }}</b> {{ feed.content }}-->
+<!--                </div>-->
                 <div id="reply_list_{{ feed.id }}">
                     {% for reply in feed.reply_list %}
                         <div style="margin: 0 20px;text-align: left;font-size: 14px">
