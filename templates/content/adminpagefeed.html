@@ -1,31 +1,146 @@
-{% extends 'content/base.html' %}
-{% load static %}
-{% block content %}
-    <h1>Feed</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="/media/pabicon.png">
+    {% load static %}
+    <h1 class="admin-header">Feed</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .admin-header {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #5d6975;
+        }
+        /* 전체 스타일 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+        }
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Content</th>
-                <th>Email</th>
-                <th>Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for feed in content_feed %}
+        /* 제목 스타일 */
+        h1 {
+            text-align: center;
+            margin: 50px 0;
+            font-size: 36px;
+            color: #333;
+        }
 
-                <tr>
-                    <td>{{ feed.content }}</td>
-                    <td>{{ feed.email }}</td>
-                    <td><img src="{% get_media_prefix %}{{ feed.image }}" width="500"></td>
-                <!--어드민 피드 html에서 사진 이미지로 출력되게 -->
-                </tr>
+        /* 피드 테이블 스타일 */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 70%;
+            margin: 20px auto;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border: none;
+        }
+
+        th {
+            background-color: #5d6975;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 12px;
+        }
+
+        td {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #e7e7e7;
+        }
+
+        tr:hover td {
+            background-color: #f5f5f5;
+        }
+
+        .no-results {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
+        }
 
 
-            {% endfor %}
-        </tbody>
-    </table>
+        /* 이미지 스타일 */
+        .feed-image {
+            display: block;
+            max-width: 100px;
+            max-height: 100px;
+            margin: 0 auto;
+        }
+
+        /* 모바일 화면에서는 테이블 각 셀이 아래로 쌓이도록 함 */
+        @media (max-width: 768px) {
+            .feed-table {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feed-table th,
+            .feed-table td {
+                display: block;
+                width: 100%;
+                border: none;
+            }
+
+            .feed-table td {
+                padding: 10px 0;
+            }
+
+            .feed-table td:first-child {
+                margin-top: 10px;
+            }
+
+            .feed-image {
+                max-width: 100px;
+                max-height: 100px;
+            }
+        }
+    </style>
+
+</head>
+<body>
 
 
 
-{% endblock %}
+<table class="feed-table">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Content</th>
+        <th>Image</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for feed in content_feed %}
+        <tr>
+            <td>{{ feed.email }}</td>
+            <td>{{ feed.content }}</td>
+            <td><img src="{% get_media_prefix %}{{ feed.image }}" class="feed-image"></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+</body>
+</html>

@@ -6,7 +6,7 @@ from .models import Feed, Reply, Like, Bookmark
 from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 
 # 메인 페이지
 class Main(APIView):
@@ -27,7 +27,7 @@ class Main(APIView):
 
         for feed in feed_object_list:
             writer = User.objects.filter(email=feed.email).first()
-            #
+
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
@@ -39,7 +39,7 @@ class Main(APIView):
             is_marked=Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
             feed_list.append(dict(id=feed.id,
                                   image=feed.image,
-                                  content=feed.content,
+                                  # content=feed.content,
                                   like_count=like_count,
                                   profile_image=writer.profile_image,
                                   nickname=writer.nickname,
@@ -373,6 +373,7 @@ class AdminPageFeed(APIView):
         return render(request, 'content/adminpagefeed.html', content_feed)
 
 
+
 class AdminPagePermission(APIView):
     def get(self, request):
         email = request.session.get('email', None)
@@ -385,32 +386,19 @@ class AdminPagePermission(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
+        user_email = request.GET.get('user_email', None)
+        user_permission = request.GET.get('user_permission', None)
+
+        if user_email and user_permission and user.permission == 3:
+            target_user = User.objects.filter(email=user_email).first()
+            target_user.permission = user_permission
+            target_user.save()
+
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
 
         context = {
-            'users': users
+            'users': users,
+            'current_permission': user.permission,
         }
         return render(request, 'content/adminpagepermiss.html', context)
-
-    def post(self, request):
-        email = request.session.get('email', None)
-
-        if email is None:
-            return render(request, "user/admin.html")
-
-        user = User.objects.filter(email=email).first()
-
-        if user.permission == 3:
-            # 옵션 값 가져오기
-            user_email = request.data.get('user_email')
-
-            # 옵션 사용자 필터링
-            user_permission = User.objects.filter(email=user_email).first()
-            user_permission.permission = request.data.get('user_permission')
-            user_permission.save()
-
-            return Response(status=200)
-        else:
-            return render(request, "user/admin.html")
-
