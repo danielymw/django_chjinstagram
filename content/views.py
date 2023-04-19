@@ -7,6 +7,10 @@ from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
+from django import template
+import re
+
+
 
 #csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -406,3 +410,6 @@ class AdminPagePermission(APIView):
             'current_permission': user.permission,
         }
         return render(request, 'content/adminpagepermiss.html', context)
+
+
+

@@ -1,5 +1,8 @@
 import os
+import re
 from uuid import uuid4
+
+from django.contrib.auth.models import User
 
 from django.shortcuts import render
 from rest_framework.response import Response
@@ -11,6 +14,17 @@ from Jinstagram.settings import MEDIA_ROOT
 from django.db.models import Q, Prefetch
 # Prefetch 추가
 from django.views import View
+from django.shortcuts import render
+from django.http import HttpResponse
+import time
+
+from django.core.cache import cache
+from datetime import timedelta
+
+from django.core.cache import cache
+from datetime import datetime, timedelta
+
+
 
 # 회원가입
 class Join(APIView):
@@ -18,41 +32,69 @@ class Join(APIView):
         return render(request, "user/join.html")
 
     def post(self, request):
-        # TODO 회원가입
+        # Join TODO
         email = request.data.get('email', None)
         nickname = request.data.get('nickname', None)
         name = request.data.get('name', None)
         password = request.data.get('password', None)
 
-        User.objects.create(email=email,
-                            nickname=nickname,
-                            name=name,
-                            password=password,
-                            profile_image="default_profile.png")
+        # WJ 패스워드 정책 설정
+        if len(password) >= 8:
+            has_uppercase = False
+            has_lowercase = False
+            has_number = False
+            has_special = False
+            for char in password:
+                if char.isupper():
+                    has_uppercase = True
+                elif char.islower():
+                    has_lowercase = True
+                elif char.isdigit():
+                    has_number = True
+                elif char in "!@#$%^&*()-_=+[]{}\\|;:'\",.<>/?`~":
+                    has_special = True
+            if (has_uppercase + has_lowercase + has_number + has_special) >= 3:
+                User.objects.create(email=email,
+                                    nickname=nickname,
+                                    name=name,
+                                    password=password,
+                                    profile_image="default_profile.png")
+                return Response(status=200)
+            else:
+                return Response(status=400)
+        else:
+            return Response(status=400)
 
-        return Response(status=200)
-# password 암호화 기능 삭제
 
 class Login(APIView):
     def get(self, request):
         return render(request, "user/login.html")
 
     def post(self, request):
-        # TODO 로그인
+        # TODO Login
         email = request.data.get('email', None)
         password = request.data.get('password', None)
 
         user = User.objects.filter(email=email).first()
 
         if user is None:
-            return Response(status=400, data=dict(message="ID가 잘못 되었습니다."))
+            return Response(status=400, data=dict(message="아이디 또는 비밀번호가 잘못되었습니다."))
+
+        failed_attempts_key = f"failed_attempts:{email}"
+        failed_attempts = cache.get(failed_attempts_key, 0)
+
+        if failed_attempts >= 5:
+            return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
 
         if user.password == password:
-            # TODO 로그인을 했다. 세션 or 쿠키
+            # TODO login. session or cookie
             request.session['email'] = email
+            cache.delete(failed_attempts_key)  # reset failed attempts count
             return Response(status=200)
         else:
-            return Response(status=400, data=dict(message="PW가 잘못 되었습니다."))
+            failed_attempts += 1
+            cache.set(failed_attempts_key, failed_attempts, timeout=timedelta(minutes=5))
+            return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
         # 비밀번호를 평문 그대로 검증하게 변경
 
 # 로그아웃
