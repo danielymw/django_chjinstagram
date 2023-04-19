@@ -7,6 +7,8 @@ from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
+from django.utils.html import escape
+
 from django import template
 import re
 
@@ -55,26 +57,57 @@ class Main(APIView):
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 
+
+
+
+
 # 피드 업로드, 파일명 난수화 기능 삭제
 class UploadFeed(APIView):
+
+    def get_mime_type(file):
+        with open(file, 'rb') as f:
+            # 파일 시그니처(signature)를 읽어서 MIME 타입 체크
+            signature = f.read(4)
+            if signature == b'\xff\xd8\xff\xe0' or signature == b'\xff\xd8\xff\xe1':
+                mime_type = 'image/jpeg'
+            elif signature == b'\x89\x50\x4e\x47':
+                mime_type = 'image/png'
+            elif signature == b'\x47\x49\x46\x38':
+                mime_type = 'image/gif'
+            elif signature == b'\x42\x4d':
+                mime_type = 'image/bmp'
+            elif signature == b'\x25\x50\x44\x46':
+                mime_type = 'application/pdf'
+            elif signature == b'\x25\x21':
+                mime_type = 'application/postscript'
+            elif signature == b'\x7b\x5c\x72\x74':
+                mime_type = 'application/x-rtf'
+            else:
+                mime_type = None
+            return mime_type
+
     def post(self, request):
 
         # 일단 파일 불러와
         file = request.FILES['file']
 
-        save_path = os.path.join(MEDIA_ROOT, file.name)
+        uuid_name = uuid4().hex
+        save_path = os.path.join(MEDIA_ROOT, uuid_name)
 
         with open(save_path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
 
-        asdf = file.name
+        asdf = uuid_name
         content123 = request.data.get('content')
         email = request.session.get('email', None)
 
         Feed.objects.create(image=asdf, content=content123, email=email)
 
         return Response(status=200)
+
+
+
 
 # 프로필 페이지
 class Profile(APIView):
@@ -115,6 +148,8 @@ class UploadReply(APIView):
         feed_id = request.data.get('feed_id', None)
         reply_content = request.data.get('reply_content', None)
         email = request.session.get('email', None)
+
+        reply_content = escape(reply_content)
 
         Reply.objects.create(feed_id=feed_id, reply_content=reply_content, email=email)
 

@@ -57,7 +57,7 @@ class Join(APIView):
                 User.objects.create(email=email,
                                     nickname=nickname,
                                     name=name,
-                                    password=password,
+                                    password=make_password(password),
                                     profile_image="default_profile.png")
                 return Response(status=200)
             else:
@@ -86,7 +86,7 @@ class Login(APIView):
         if failed_attempts >= 5:
             return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
 
-        if user.password == password:
+        if user.check_password(password):
             # TODO login. session or cookie
             request.session['email'] = email
             cache.delete(failed_attempts_key)  # reset failed attempts count
@@ -105,6 +105,7 @@ class LogOut(APIView):
         # 쿠키에서 CSRF 토큰 삭제
         response = render(request, "user/login.html")
         response.delete_cookie('csrftoken')
+        response.delete_cookie('sessionid')
 
         return response
 
@@ -138,7 +139,7 @@ class SearchUser(APIView):
     def get(self, request):
         query = request.GET.get('q', '')
         if query:
-            users = User.objects.raw("SELECT * FROM User WHERE email='%s' OR nickname='%s'" % (query, query))
+            users = User.objects.filter(Q(email=query) | Q(nickname=query))
         else:
             users = User.objects.none()
         return render(request, 'user/search.html',{"users": users})
