@@ -97,7 +97,7 @@ class SearchUser(APIView):
     def get(self, request):
         query = request.GET.get('q', '')
         if query:
-            users = User.objects.raw("SELECT * FROM User WHERE email='%s' OR nickname='%s'" % (query, query))
+            users = User.objects.filter(Q(email=query) | Q(nickname=query))
         else:
             users = User.objects.none()
         return render(request, 'user/search.html',{"users": users})
