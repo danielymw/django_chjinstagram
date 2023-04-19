@@ -27,7 +27,7 @@ class Join(APIView):
         User.objects.create(email=email,
                             nickname=nickname,
                             name=name,
-                            password=password,
+                            password=make_password(password),
                             profile_image="default_profile.png")
 
         return Response(status=200)
@@ -45,14 +45,14 @@ class Login(APIView):
         user = User.objects.filter(email=email).first()
 
         if user is None:
-            return Response(status=400, data=dict(message="ID가 잘못 되었습니다."))
+            return Response(status=400, data=dict(message="회원정보가 잘못 되었습니다."))
 
-        if user.password == password:
+        if user.check_password(password):
             # TODO 로그인을 했다. 세션 or 쿠키
             request.session['email'] = email
             return Response(status=200)
         else:
-            return Response(status=400, data=dict(message="PW가 잘못 되었습니다."))
+            return Response(status=400, data=dict(message="회원정보가 잘못 되었습니다."))
         # 비밀번호를 평문 그대로 검증하게 변경
 
 # 로그아웃
@@ -63,6 +63,7 @@ class LogOut(APIView):
         # 쿠키에서 CSRF 토큰 삭제
         response = render(request, "user/login.html")
         response.delete_cookie('csrftoken')
+        response.delete_cookie('sessionid')
 
         return response
 

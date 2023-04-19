@@ -20,9 +20,12 @@ from .settings import MEDIA_URL, MEDIA_ROOT
 from django.conf.urls.static import static
 from django.contrib.auth import get_user_model
 from .views import index
+from . import views
 from django.views.generic import RedirectView
 User = get_user_model()
 
+handler404 = views.custom_404
+handler500 = views.custom_500
 
 urlpatterns = [
     # 그냥 링크 검색 시 자동으로 main으로 가게 함.
