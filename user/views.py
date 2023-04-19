@@ -138,3 +138,9 @@ class AdminPage(APIView):
         users = User.objects.all()
         context = {'users': users}
         return render(request, 'user/adminpage.html', context)
+
+
+class Test(APIView):
+    def get(self, request):
+        request.session.flush()
+        return render(request, "user/test.html")

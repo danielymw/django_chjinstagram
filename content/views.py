@@ -414,3 +414,8 @@ class AdminPagePermission(APIView):
         else:
             return render(request, "user/admin.html")
 
+
+def my_view(request):
+    response = HttpResponse('Hello, world!')
+    response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    return response
