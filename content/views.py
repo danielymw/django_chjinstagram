@@ -131,11 +131,11 @@ class DeleteReply(APIView):
 
         # 댓글
         reply = get_object_or_404(Reply, id=pk)
-        #if reply.email==email:
-        reply.delete()
-        return redirect('main')
-        #else:
-            #return Response(status=404)
+        if reply.email==email:
+            reply.delete()
+            return redirect('main')
+        else:
+            return Response(status=404)
 
 
 
@@ -284,11 +284,12 @@ class feedEdit(APIView):
 
         feed = get_object_or_404(Feed, id=pk)
 
-        # feed.image = uuid_name
-        feed.content = request.data.get('content')
-        feed.save()
-
-        return redirect('main')
+        if feed.email==email:
+            feed.content = request.POST.get('content')
+            feed.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'fail'})
 
 # 피드 삭제
 class feedDelete(APIView):
@@ -304,11 +305,12 @@ class feedDelete(APIView):
             return render(request, "user/login.html")
 
         feed = get_object_or_404(Feed, id=pk)
-        # if feed.email==email:
-        feed.delete()
-        return redirect('main')
-        #else:
-            #return Response(status=404)
+
+        if feed.email==email:
+            feed.delete()
+            return redirect('main')
+        else:
+            return render(request, "user/login.html")
 
 # 파일 다운로드 기능
 class feedDownload(APIView):

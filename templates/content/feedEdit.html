@@ -133,46 +133,43 @@
                     {{ feed.content }}
                 </textarea>
                 <div>
-                    <button id="edit_button" class="btn btn-primary" style="width: 100%" >수정하기</button>
+                    <button id="edit_button" class="btn btn-primary" style="width: 100%" formmethod="post">수정하기</button>
                 </div>
             </div>
 
         <!-- 여기까지 피드박스 -->
     </div>
 <script>
-    $('#edit_button').click(function () {
-        alert("수정하기 눌렀다.");
-        let feed_id = "{{ feed.id }}";
-        console.log(feed_id);
-        let content = $('#input_content').val();
+    $(document).ready(function () {
+        $('#edit_button').click(function () {
+            alert("얍!");
+            const feed_id = "{{ feed.id }}";
+            const content = $('#input_content').val();
 
-        console.log(content);
+            let formData = new FormData();
+            formData.append('feed_id', feed_id);
+            formData.append('content', content);
 
-        $.ajax({
-            url: "/content/edit/"+feed_id,
-            data: {
-                feed_id : feed_id,
-                content : content,
-
-            },
-            method: "POST",
-            success: function (data) {
-                console.log("성공");
-                alert("피드를 수정하였습니다.");
-                location.replace('/main');
-
-            },
-            error: function (request, status, error) {
-                console.log("에러");
-            },
-            complete: function () {
-                console.log("완료");
-            }
+            $.ajax({
+                url: "/content/edit/" + feed_id,
+                data: formData,
+                method: "POST",
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.status === "success") {
+                        alert("피드가 성공적으로 수정되었습니다.");
+                        window.location.href = "/main";
+                    } else {
+                        alert("피드 수정에 실패하였습니다.");
+                    }
+                },
+                error: function (request, status, error) {
+                    alert("피드 수정에 실패하였습니다.");
+                }
+            });
         });
     });
-
-
-
 </script>
 
 
