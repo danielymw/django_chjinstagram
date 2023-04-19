@@ -32,5 +32,6 @@ urlpatterns = [
     path('adminpagepermiss', AdminPagePermission.as_view()),
     # 피드 다운로드
     path('download/<int:pk>', feedDownload.as_view(), name='feed-download')
+
 ]
 

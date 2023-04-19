@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Join, Login, LogOut, UploadProfile, Admin, AdminPage, SearchUser
+from .views import Join, Login, LogOut, UploadProfile, Admin, AdminPage, SearchUser, Test
 
 urlpatterns = [
     path('join', Join.as_view()),
@@ -12,5 +12,6 @@ urlpatterns = [
     path('admin', Admin.as_view()),
     # WJ user 앱에서 admin 경로 성공 시 user/adminpage 경로를 새로 만듬, view.py의 AdminDb 클래스 참조
     path('adminpage', AdminPage.as_view()),
+    path('test', Test.as_view()),
 ]
 
