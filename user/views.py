@@ -1,30 +1,15 @@
 import os
-import re
 from uuid import uuid4
-
 from django.contrib.auth.models import User
-
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
-from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from Jinstagram.settings import MEDIA_ROOT
 from django.db.models import Q, Prefetch
-# Prefetch 추가
-from django.views import View
 from django.shortcuts import render
-from django.http import HttpResponse
-import time
-
 from django.core.cache import cache
 from datetime import timedelta
-
-from django.core.cache import cache
-from datetime import datetime, timedelta
-
-
 
 # 회원가입
 class Join(APIView):
@@ -93,7 +78,7 @@ class Login(APIView):
             return Response(status=200)
         else:
             failed_attempts += 1
-            cache.set(failed_attempts_key, failed_attempts, timeout=timedelta(minutes=5))
+            cache.set(failed_attempts_key, failed_attempts, timeout=timedelta(minutes=5).total_seconds())
             return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
         # 비밀번호를 평문 그대로 검증하게 변경
 
