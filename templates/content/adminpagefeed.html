@@ -134,7 +134,7 @@
     <tbody>
     {% for feed in content_feed %}
         <tr>
-            <td>{{ feed.email }}</td>
+            <td>{{ feed.email|slice:":4" }}{{ feed.email|slice:"4:"|stringformat:"*" }}</td>
             <td>{{ feed.content }}</td>
             <td><img src="{% get_media_prefix %}{{ feed.image }}" class="feed-image"></td>
         </tr>
