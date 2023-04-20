@@ -8,10 +8,8 @@ import os
 from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.utils.html import escape
-
-from django import template
-import re
-
+from rest_framework import status
+import magic
 
 
 # 메인 페이지
@@ -40,9 +38,9 @@ class Main(APIView):
                 replier = User.objects.filter(email=reply.email).first()
                 reply_list.append(dict(reply_content=reply.reply_content,
                                        nickname=replier.nickname))
-            like_count=Like.objects.filter(feed_id=feed.id, is_like=True).count()
-            is_liked=Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
-            is_marked=Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
+            like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
+            is_liked = Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
+            is_marked = Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
             feed_list.append(dict(id=feed.id,
                                   image=feed.image,
                                   # content=feed.content,
@@ -57,39 +55,25 @@ class Main(APIView):
         return render(request, "jinstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 
-
-
-
-
 # 피드 업로드, 파일명 난수화 기능 삭제
 class UploadFeed(APIView):
-
+    # @staticmethod
+    # def get_mime_type(file):
+    #     mime_type, _ = mimetypes.guess_type(file.temporary_file_path())
+    #     return mime_type
+    @staticmethod
     def get_mime_type(file):
-        with open(file, 'rb') as f:
-            # 파일 시그니처(signature)를 읽어서 MIME 타입 체크
-            signature = f.read(4)
-            if signature == b'\xff\xd8\xff\xe0' or signature == b'\xff\xd8\xff\xe1':
-                mime_type = 'image/jpeg'
-            elif signature == b'\x89\x50\x4e\x47':
-                mime_type = 'image/png'
-            elif signature == b'\x47\x49\x46\x38':
-                mime_type = 'image/gif'
-            elif signature == b'\x42\x4d':
-                mime_type = 'image/bmp'
-            elif signature == b'\x25\x50\x44\x46':
-                mime_type = 'application/pdf'
-            elif signature == b'\x25\x21':
-                mime_type = 'application/postscript'
-            elif signature == b'\x7b\x5c\x72\x74':
-                mime_type = 'application/x-rtf'
-            else:
-                mime_type = None
-            return mime_type
-
+        mime_type = magic.from_buffer(file.read(), mime=True)
+        return mime_type
     def post(self, request):
 
         # 일단 파일 불러와
         file = request.FILES['file']
+
+        # MIME 타입 확인
+        mime_type = self.get_mime_type(file)
+        if mime_type not in ['image/jpeg', 'image/png', 'image/gif']:
+            return Response({"error": "올바른 이미지 형식이 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         uuid_name = uuid4().hex
         save_path = os.path.join(MEDIA_ROOT, uuid_name)
@@ -105,8 +89,6 @@ class UploadFeed(APIView):
         Feed.objects.create(image=asdf, content=content123, email=email)
 
         return Response(status=200)
-
-
 
 
 # 프로필 페이지
@@ -132,6 +114,7 @@ class Profile(APIView):
                                                                     bookmark_feed_list=bookmark_feed_list,
                                                                     user=user))
 
+
 # 댓글 게시
 class UploadReply(APIView):
     def post(self, request):
@@ -155,6 +138,7 @@ class UploadReply(APIView):
 
         return Response(status=200)
 
+
 # 댓글 삭제
 class DeleteReply(APIView):
     def get(self, request, pk):
@@ -170,12 +154,11 @@ class DeleteReply(APIView):
 
         # 댓글
         reply = get_object_or_404(Reply, id=pk)
-        if reply.email==email:
+        if reply.email == email:
             reply.delete()
             return redirect('main')
         else:
             return Response(status=404)
-
 
 
 # 좋아요 기능
@@ -200,6 +183,7 @@ class ToggleLike(APIView):
 
         return Response(status=200)
 
+
 # 북마크 기능
 class ToggleBookmark(APIView):
     def post(self, request):
@@ -221,6 +205,7 @@ class ToggleBookmark(APIView):
             Bookmark.objects.create(feed_id=feed_id, is_marked=is_marked, email=email)
 
         return Response(status=200)
+
 
 # 피드 상세 보기
 class feedDetail(APIView):
@@ -259,7 +244,7 @@ class feedDetail(APIView):
 
         for reply in reply_object_list:
             replier = User.objects.filter(email=reply.email).first()
-            if reply.email==email:
+            if reply.email == email:
                 reply_session_check = True
             else:
                 reply_session_check = False
@@ -283,7 +268,8 @@ class feedDetail(APIView):
             'feed_session_check': feed_session_check,
         }
 
-        return render(request, 'content/feedDetail.html',  context)
+        return render(request, 'content/feedDetail.html', context)
+
 
 # 피드 수정
 class feedEdit(APIView):
@@ -323,12 +309,13 @@ class feedEdit(APIView):
 
         feed = get_object_or_404(Feed, id=pk)
 
-        if feed.email==email:
+        if feed.email == email:
             feed.content = request.POST.get('content')
             feed.save()
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'fail'})
+
 
 # 피드 삭제
 class feedDelete(APIView):
@@ -345,11 +332,12 @@ class feedDelete(APIView):
 
         feed = get_object_or_404(Feed, id=pk)
 
-        if feed.email==email:
+        if feed.email == email:
             feed.delete()
             return redirect('main')
         else:
             return render(request, "user/login.html")
+
 
 # 파일 다운로드 기능
 class feedDownload(APIView):
@@ -376,6 +364,7 @@ class feedDownload(APIView):
             response['Content-Disposition'] = f'attachment; filename="{file_name}"'
             return response
 
+
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
@@ -395,6 +384,7 @@ class AdminPage(APIView):
 
         return render(request, 'user/adminpage.html', content_feed)
 
+
 class AdminPageFeed(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
     def get(self, request):
@@ -412,7 +402,6 @@ class AdminPageFeed(APIView):
         content_feed = {'content_feed': feed}
 
         return render(request, 'content/adminpagefeed.html', content_feed)
-
 
 
 class AdminPagePermission(APIView):
@@ -443,6 +432,3 @@ class AdminPagePermission(APIView):
             'current_permission': user.permission,
         }
         return render(request, 'content/adminpagepermiss.html', context)
-
-
-

@@ -34,4 +34,3 @@ urlpatterns = [
     path('download/<int:pk>', feedDownload.as_view(), name='feed-download')
 
 ]
-

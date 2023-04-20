@@ -22,6 +22,7 @@ from django.contrib.auth import get_user_model
 from .views import index
 from . import views
 from django.views.generic import RedirectView
+
 User = get_user_model()
 
 handler404 = views.custom_404

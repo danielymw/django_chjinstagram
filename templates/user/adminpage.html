@@ -159,15 +159,17 @@
                         <td>{{ user.nickname }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.password }}</td>
-                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                        <td>{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
                     </tr>
                 {% else %}
                     <tr>
                         <td>{{ user.id }}</td>
                         <td>{{ user.nickname }}</td>
-                        <td>{{ user.email }}</td>
+                        <td>
+                            {% with masked_email=user.email|slice:"5:" %}*****{{ masked_email }}{% endwith %}
+                        </td>
                         <td>{{ user.password }}</td>
-                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                        <td>{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
                     </tr>
                 {% endif %}
             {% empty %}
