@@ -85,8 +85,6 @@ class Login(APIView):
         if failed_attempts >= 5:
             return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
 
-
-
         if user.check_password(password):
             # TODO login. session or cookie
             request.session['email'] = email
@@ -161,7 +159,7 @@ class Admin(APIView):
         if user is None:
             return Response(status=400, data=dict(message="회원정보가 없습니다."))
 
-        if user.password == password:
+        if user.check_password(password):
             if (user.permission == 2) or (user.permission == 3):
                 request.session['email'] = email
                 return Response(status=200)
@@ -182,6 +180,9 @@ class AdminPage(APIView):
         user = User.objects.filter(email=email).first()
 
         if user is None:
+            return render(request, "user/admin.html")
+
+        if user.permission is not 3:
             return render(request, "user/admin.html")
 
         users = User.objects.all()
