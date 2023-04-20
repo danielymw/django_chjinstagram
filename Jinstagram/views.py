@@ -22,12 +22,6 @@ class Sub(APIView):
             return render(request, 'main/parameter.html', data)
 
 
-# def index(request):
-#     path = '.'
-#     files = os.listdir(path)
-#     return render(request, 'jinstagram/index.html', {'files': files})
-#
-
 def custom_404(request, exception):
     return render(request, 'jinstagram/error.html', status=404)
 

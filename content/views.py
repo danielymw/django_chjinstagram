@@ -9,8 +9,7 @@ from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.utils.html import escape
 from rest_framework import status
-import magic
-
+import filetype
 
 # 메인 페이지
 class Main(APIView):
@@ -57,13 +56,11 @@ class Main(APIView):
 
 # 피드 업로드, 파일명 난수화 기능 삭제
 class UploadFeed(APIView):
-    # @staticmethod
-    # def get_mime_type(file):
-    #     mime_type, _ = mimetypes.guess_type(file.temporary_file_path())
-    #     return mime_type
     @staticmethod
     def get_mime_type(file):
-        mime_type = magic.from_buffer(file.read(), mime=True)
+        file.seek(0)  # Move the file pointer back to the beginning
+        mime_type = filetype.guess_mime(file.read())
+        file.seek(0)  # Reset the file pointer back to the beginning
         return mime_type
     def post(self, request):
 

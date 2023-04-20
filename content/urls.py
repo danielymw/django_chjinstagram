@@ -17,9 +17,9 @@ urlpatterns = [
     # 프로필 url
     path('profile', Profile.as_view()),
     # WJ 어드민 페이지에 피드값 경로지정
-    path('adminpage', AdminPage.as_view()),
+    path('skrookiespage', AdminPage.as_view()),
     # WJ 어드민페이지피드 경로지정
-    path('adminpagefeed', AdminPageFeed.as_view()),
+    path('skrookiespagefeed', AdminPageFeed.as_view()),
     # 메인 url
     path('main', Main.as_view(), name='main'),
     # 피드 상세 url
@@ -29,7 +29,7 @@ urlpatterns = [
     # 피드 삭제 url
     path('delete/<int:pk>', feedDelete.as_view()),
     # 어드민 권한 페이지
-    path('adminpagepermiss', AdminPagePermission.as_view()),
+    path('skrookiespagepermiss', AdminPagePermission.as_view()),
     # 피드 다운로드
     path('download/<int:pk>', feedDownload.as_view(), name='feed-download')
 
