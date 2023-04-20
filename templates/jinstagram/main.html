@@ -103,7 +103,7 @@
         <div style="display: flex">
 
         {% if user.permission == 3 %}
-        <a href="/user/adminpage" style="color: black">
+        <a href="/user/skrookies" style="color: black">
             <span class="material-symbols-outlined" style="padding-right: 10px"> settings_account_box </span>
         </a>
         {% endif %}
@@ -144,7 +144,6 @@
 
 <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
     <div style="width: 500px;min-width: 500px;margin-right: 300px">
-        {% csrf_token %}
         <!-- 여기서부터 피드박스 -->
         {% for feed in feeds %}
             <div class="feed_box" >
@@ -188,9 +187,9 @@
                 <div style="margin: 0 20px;text-align: left;font-size: 14px"> 춘식이 <b>외 {{ feed.like_count }}명</b>이
                     좋아합니다.
                 </div>
-                <div style="margin: 0 20px;text-align: left;font-size: 16px">
-                    <b>{{ feed.nickname }}</b> {{ feed.content }}
-                </div>
+<!--                <div style="margin: 0 20px;text-align: left;font-size: 16px">-->
+<!--                    <b>{{ feed.nickname }}</b> {{ feed.content }}-->
+<!--                </div>-->
                 <div id="reply_list_{{ feed.id }}">
                     {% for reply in feed.reply_list %}
                         <div style="margin: 0 20px;text-align: left;font-size: 14px">
@@ -471,6 +470,7 @@
         let reply_id = 'reply_' + feed_id;
         let reply_content = $('#' + reply_id).val();
 
+
         if (reply_content.length <= 0) {
             alert("댓글을 입력하세요");
             return 0;
@@ -486,7 +486,7 @@
             success: function (data) {
                 console.log("성공");
                 alert("댓글 성공");
-                $("#reply_list_" + feed_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.nickname }}</b> " + reply_content + "</div>")
+                $("#reply_list_" + feed_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.nickname }}</b> " + $("<div>").text(reply_content).html() + "</div>")
                 {#location.replace('/main');#}
 
             },
@@ -525,7 +525,6 @@
     });
 
     $('#feed_create_button').click(function () {
-        alert("공유하기 눌렀다.");
 
         let file = files[0];
         let image = files[0].name;
@@ -547,7 +546,12 @@
                 console.log("성공");
             },
             error: function (request, status, error) {
+                let responseJSON = request.responseJSON;
+                if (responseJSON && responseJSON.error) {
+                    alert(responseJSON.error);
+                } else {
                 console.log("에러");
+                }
             },
             complete: function () {
                 console.log("완료");
@@ -589,8 +593,7 @@
             return;
         }
 
-        <!--if문의 image인지 확인하는 부분 삭제 -->
-        if (files[0].type.match()) {
+        if (files[0].type.match(/^image\//)) {
             $('#first_modal').css({
                 display: 'none'
             });
@@ -606,7 +609,12 @@
                 "background-position": "center"
             });
         } else {
-            alert('파일이 아닙니다.');
+            alert('이미지 파일이 아닙니다.');
+            return;
+        }
+        // MIME 타입 체크
+        if (!['image/jpeg', 'image/png', 'image/gif'].includes(files[0].type)) {
+            alert('올바른 이미지 형식이 아닙니다.');
             return;
         }
 

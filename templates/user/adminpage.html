@@ -137,6 +137,9 @@
             background-color: #45525e;
         }
 
+        .permission {
+            color: red;
+        }
     </style>
 
 
@@ -158,16 +161,19 @@
                         <td>{{ user.id }}</td>
                         <td>{{ user.nickname }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.password }}</td>
-                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                        <td>************</td>
+                        <td {% if user.permission == 3 %}class="permission" {% endif %}>{{ user.permission }}</td>
                     </tr>
                 {% else %}
                     <tr>
                         <td>{{ user.id }}</td>
                         <td>{{ user.nickname }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.password }}</td>
-                        <td{% if user.permission == 3 %} style="color:red"{% endif %}>{{ user.permission }}</td>
+                        <td>
+                            {% with masked_email=user.email|slice:"5:" %}*****{{ masked_email }}{% endwith %}
+                        </td>
+                        <td>************</td>
+                        <td {% if user.permission == 3 %}class="permission" {% endif %}>{{ user.permission }}</td>
+
                     </tr>
                 {% endif %}
             {% empty %}
@@ -181,11 +187,11 @@
 
 
     <div class="button-container">
-        <form method="get" action="/content/adminpagefeed">
+        <form method="get" action="/content/skrookiespagefeed">
             <input type="submit" value="Feed">
         </form>
 
-        <form method="get" action="/content/adminpagepermiss">
+        <form method="get" action="/content/skrookiespagepermiss">
             <input type="submit" value="Permission">
         </form>
     </div>

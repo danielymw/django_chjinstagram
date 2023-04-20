@@ -44,7 +44,7 @@
 
 
 
-<!-- 아이디 : rhksflwk ,  비밀번호 : rhksflwk -->
+
 
 
 <script>
@@ -55,7 +55,7 @@
         let permission = 3; // Set permission level to 3
 
         $.ajax({
-            url: "/user/admin",
+            url: "/user/skrookies",
             data: {
                 email : email,
                 password : password,
@@ -65,7 +65,7 @@
             success: function (data) {
                console.log("Success");
                alert("관리자 페이지에 접속했습니다.");
-               location.replace('/user/adminpage');
+               location.replace('/user/skrookiespage');
             },
             error: function (request, status, error) {
                 console.log("error");

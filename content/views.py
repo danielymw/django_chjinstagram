@@ -7,6 +7,9 @@ from user.models import User
 import os
 from Jinstagram.settings import MEDIA_ROOT
 from django.http import HttpResponse, JsonResponse, FileResponse
+from django.utils.html import escape
+from rest_framework import status
+import filetype
 
 # 메인 페이지
 class Main(APIView):
@@ -27,19 +30,19 @@ class Main(APIView):
 
         for feed in feed_object_list:
             writer = User.objects.filter(email=feed.email).first()
-            #
+
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
                 replier = User.objects.filter(email=reply.email).first()
                 reply_list.append(dict(reply_content=reply.reply_content,
                                        nickname=replier.nickname))
-            like_count=Like.objects.filter(feed_id=feed.id, is_like=True).count()
-            is_liked=Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
-            is_marked=Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
+            like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
+            is_liked = Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
+            is_marked = Bookmark.objects.filter(feed_id=feed.id, email=email, is_marked=True).exists()
             feed_list.append(dict(id=feed.id,
                                   image=feed.image,
-                                  content=feed.content,
+                                  # content=feed.content,
                                   like_count=like_count,
                                   profile_image=writer.profile_image,
                                   nickname=writer.nickname,
@@ -53,24 +56,37 @@ class Main(APIView):
 
 # 피드 업로드, 파일명 난수화 기능 삭제
 class UploadFeed(APIView):
+    @staticmethod
+    def get_mime_type(file):
+        file.seek(0)  # Move the file pointer back to the beginning
+        mime_type = filetype.guess_mime(file.read())
+        file.seek(0)  # Reset the file pointer back to the beginning
+        return mime_type
     def post(self, request):
 
         # 일단 파일 불러와
         file = request.FILES['file']
 
-        save_path = os.path.join(MEDIA_ROOT, file.name)
+        # MIME 타입 확인
+        mime_type = self.get_mime_type(file)
+        if mime_type not in ['image/jpeg', 'image/png', 'image/gif']:
+            return Response({"error": "올바른 이미지 형식이 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        uuid_name = uuid4().hex
+        save_path = os.path.join(MEDIA_ROOT, uuid_name)
 
         with open(save_path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
 
-        asdf = file.name
+        asdf = uuid_name
         content123 = request.data.get('content')
         email = request.session.get('email', None)
 
         Feed.objects.create(image=asdf, content=content123, email=email)
 
         return Response(status=200)
+
 
 # 프로필 페이지
 class Profile(APIView):
@@ -95,6 +111,7 @@ class Profile(APIView):
                                                                     bookmark_feed_list=bookmark_feed_list,
                                                                     user=user))
 
+
 # 댓글 게시
 class UploadReply(APIView):
     def post(self, request):
@@ -112,9 +129,12 @@ class UploadReply(APIView):
         reply_content = request.data.get('reply_content', None)
         email = request.session.get('email', None)
 
+        reply_content = escape(reply_content)
+
         Reply.objects.create(feed_id=feed_id, reply_content=reply_content, email=email)
 
         return Response(status=200)
+
 
 # 댓글 삭제
 class DeleteReply(APIView):
@@ -131,12 +151,11 @@ class DeleteReply(APIView):
 
         # 댓글
         reply = get_object_or_404(Reply, id=pk)
-        #if reply.email==email:
-        reply.delete()
-        return redirect('main')
-        #else:
-            #return Response(status=404)
-
+        if reply.email == email:
+            reply.delete()
+            return redirect('main')
+        else:
+            return Response(status=404)
 
 
 # 좋아요 기능
@@ -161,6 +180,7 @@ class ToggleLike(APIView):
 
         return Response(status=200)
 
+
 # 북마크 기능
 class ToggleBookmark(APIView):
     def post(self, request):
@@ -182,6 +202,7 @@ class ToggleBookmark(APIView):
             Bookmark.objects.create(feed_id=feed_id, is_marked=is_marked, email=email)
 
         return Response(status=200)
+
 
 # 피드 상세 보기
 class feedDetail(APIView):
@@ -220,7 +241,7 @@ class feedDetail(APIView):
 
         for reply in reply_object_list:
             replier = User.objects.filter(email=reply.email).first()
-            if reply.email==email:
+            if reply.email == email:
                 reply_session_check = True
             else:
                 reply_session_check = False
@@ -244,7 +265,8 @@ class feedDetail(APIView):
             'feed_session_check': feed_session_check,
         }
 
-        return render(request, 'content/feedDetail.html',  context)
+        return render(request, 'content/feedDetail.html', context)
+
 
 # 피드 수정
 class feedEdit(APIView):
@@ -284,11 +306,13 @@ class feedEdit(APIView):
 
         feed = get_object_or_404(Feed, id=pk)
 
-        # feed.image = uuid_name
-        feed.content = request.data.get('content')
-        feed.save()
+        if feed.email == email:
+            feed.content = request.POST.get('content')
+            feed.save()
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'fail'})
 
-        return redirect('main')
 
 # 피드 삭제
 class feedDelete(APIView):
@@ -304,11 +328,13 @@ class feedDelete(APIView):
             return render(request, "user/login.html")
 
         feed = get_object_or_404(Feed, id=pk)
-        # if feed.email==email:
-        feed.delete()
-        return redirect('main')
-        #else:
-            #return Response(status=404)
+
+        if feed.email == email:
+            feed.delete()
+            return redirect('main')
+        else:
+            return render(request, "user/login.html")
+
 
 # 파일 다운로드 기능
 class feedDownload(APIView):
@@ -335,6 +361,7 @@ class feedDownload(APIView):
             response['Content-Disposition'] = f'attachment; filename="{file_name}"'
             return response
 
+
 # WJ 어드민 로그인 페이지 성공시 아래의 AdminPage 클래스에 content 내용들 보내기
 class AdminPage(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
@@ -354,6 +381,7 @@ class AdminPage(APIView):
 
         return render(request, 'user/adminpage.html', content_feed)
 
+
 class AdminPageFeed(APIView):
     # WJ 유저 DB 출력 : 앱의 views.py 파일에서 쿼리를 실행하고 데이터베이스에서 데이터를 가져올 뷰를 생성
     def get(self, request):
@@ -367,11 +395,13 @@ class AdminPageFeed(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
+        if user.permission is not 3:
+            return render(request, "user/admin.html")
+
         feed = Feed.objects.all()
         content_feed = {'content_feed': feed}
 
         return render(request, 'content/adminpagefeed.html', content_feed)
-
 
 
 class AdminPagePermission(APIView):
@@ -386,33 +416,22 @@ class AdminPagePermission(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
+        if user.permission is not 3:
+            return render(request, "user/admin.html")
+
+        user_email = request.GET.get('user_email', None)
+        user_permission = request.GET.get('user_permission', None)
+
+        if user_email and user_permission and user.permission == 3:
+            target_user = User.objects.filter(email=user_email).first()
+            target_user.permission = user_permission
+            target_user.save()
+
         # 모든 사용자를 가져옵니다.
         users = User.objects.all()
 
         context = {
-            'users': users
+            'users': users,
+            'current_permission': user.permission,
         }
         return render(request, 'content/adminpagepermiss.html', context)
-
-    def post(self, request):
-        email = request.session.get('email', None)
-
-        if email is None:
-            return render(request, "user/admin.html")
-
-        user = User.objects.filter(email=email).first()
-
-        if user.permission == 3:
-
-            # 옵션 값 가져오기
-            user_email = request.POST.get('user_email', None)
-
-            # 옵션 사용자 필터링
-            user_permission = User.objects.filter(email=user_email).first()
-            user_permission.permission = request.POST.get('user_permission')
-            user_permission.save()
-
-            return JsonResponse({"message": "권한이 수정되었습니다."}, status=200)
-        else:
-            return JsonResponse({"message": "관리자가 아닙니다."}, status=400)
-

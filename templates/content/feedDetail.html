@@ -20,7 +20,7 @@
     <!-- Jquery -->
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-    <title>Hello, world!</title>
+    <title>CHJinstagram</title>
 
     <style>
         .box {
@@ -344,7 +344,8 @@
             success: function (data) {
                 console.log("성공");
                 alert("댓글 성공");
-                $("#reply_list_" + feed_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.nickname }}</b> " + reply_content + "</div>")
+                $("#reply_list_" + feed_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.nickname }}</b> " + $("<div>").text(reply_content).html() + "</div>")
+
                 {#location.replace('/main');#}
                 // 페이지 새로고침
                 location.reload();

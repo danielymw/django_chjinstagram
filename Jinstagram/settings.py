@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-l!nhqf=$mq#60p-8=^-!)&n-j3n-a$nf7ag%h(jlevbanl08%9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -44,13 +46,13 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    #'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'Jinstagram.urls'
@@ -58,8 +60,7 @@ ROOT_URLCONF = 'Jinstagram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,7 +70,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             # 필터링
-            'autoescape': False,
+            'autoescape': True,
         },
     },
 ]
@@ -143,7 +144,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -154,9 +158,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 각 media 파일에 대한 URL Prefix
 MEDIA_URL = '/media/' # 항상 / 로 끝나도록 설정
-# MEDIA_URL = 'http://static.myservice.com/media/' 다른 서버로 media 파일 복사시
-# 업로드된 파일을 저장할 디렉토리 경로
+# MEDIA_URL = 'http://static.myservice.com/media/' # 다른 서버로 media 파일 복사시
+# # 업로드된 파일을 저장할 디렉토리 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # 커스텀 유저 모델 사용
 
@@ -164,16 +169,19 @@ AUTH_USER_MODEL = 'user.User'
 
 
 # WJ CSRF 안나오게함.
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 
 # 세션 <script>alert(document.cookie)</script> 되게 옵션 False
-SESSION_COOKIE_HTTPONLY = False
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = True
 
-SECURE_CONTENT_TYPE_NOSNIFF = False
-SECURE_BROWSER_XSS_FILTER = False
 
-X_FRAME_OPTIONS = 'ALLOW-FROM'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
 
+X_FRAME_OPTIONS = 'DENY'
+
+
+SESSION_COOKIE_AGE = 60 * 30
+# 30분
