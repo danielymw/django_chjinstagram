@@ -96,9 +96,19 @@ class LogOut(APIView):
 
         return response
 
-# 프로필 사진업로드로 파일 업로드 취약점 만들려면 고쳐야되는 코드
+# 프로필 사진 업로드ㅡ
 class UploadProfile(APIView):
     def post(self, request):
+
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
 
         # 일단 파일 불러와
         file = request.FILES['file']
