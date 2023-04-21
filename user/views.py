@@ -48,7 +48,7 @@ class Join(APIView):
                                     profile_image="default_profile.png")
                 return Response(status=200)
             else:
-                return Response(status=400)
+                return Response(status=400,data=dict(message="패스워드가 잘못 되었습니다. \n 패스워드 정책은 최소 8자리,대문자, 소문자, 숫자, 특수문자 중 적어도 3가지 이상을 모두 포함"))
         else:
             return Response(status=400)
 
