@@ -170,7 +170,7 @@ class AdminPage(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
-        if user.permission is not 3:
+        if user.permission != 3:
             return render(request, "user/admin.html")
 
         users = User.objects.all()

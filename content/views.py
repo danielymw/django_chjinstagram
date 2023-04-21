@@ -395,7 +395,7 @@ class AdminPageFeed(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
-        if user.permission is not 3:
+        if user.permission != 3:
             return render(request, "user/admin.html")
 
         feed = Feed.objects.all()
@@ -416,7 +416,7 @@ class AdminPagePermission(APIView):
         if user is None:
             return render(request, "user/admin.html")
 
-        if user.permission is not 3:
+        if user.permission != 3:
             return render(request, "user/admin.html")
 
         user_email = request.GET.get('user_email', None)
