@@ -149,8 +149,8 @@
             <tr>
                 <th>Num</th>
                 <th>Username</th>
-                <th>Email</th>
-                <th>Password</th>
+<!--                <th>Email</th>-->
+<!--                <th>Password</th>-->
                 <th>Permission</th>
             </tr>
             </thead>
@@ -160,18 +160,18 @@
                     <tr style="background-color: #ffd967;">
                         <td>{{ user.id }}</td>
                         <td>{{ user.nickname }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>************</td>
+<!--                        <td>{{ user.email }}</td>-->
+<!--                        <td>************</td>-->
                         <td {% if user.permission == 3 %}class="permission" {% endif %}>{{ user.permission }}</td>
                     </tr>
                 {% else %}
                     <tr>
                         <td>{{ user.id }}</td>
                         <td>{{ user.nickname }}</td>
-                        <td>
-                            {% with masked_email=user.email|slice:"5:" %}*****{{ masked_email }}{% endwith %}
-                        </td>
-                        <td>************</td>
+<!--                        <td>-->
+<!--                            {% with masked_email=user.email|slice:"5:" %}*****{{ masked_email }}{% endwith %}-->
+<!--                        </td>-->
+<!--                        <td>************</td>-->
                         <td {% if user.permission == 3 %}class="permission" {% endif %}>{{ user.permission }}</td>
 
                     </tr>
