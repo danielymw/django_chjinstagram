@@ -23,7 +23,7 @@ class Sub(APIView):
 
 
 def custom_404(request, exception):
-    return render(request, 'jinstagram/error.html', status=404)
+    return render(request, 'jinstagram/error.html', status=200)
 
 def custom_500(request):
-    return render(request, 'jinstagram/error.html', status=500)
+    return render(request, 'jinstagram/error.html', status=200)
