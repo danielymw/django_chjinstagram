@@ -60,24 +60,21 @@
                 password : password
             },
             method: "POST",
-            success: function (data) {
-                console.log("로그인 성공");
-                alert("로그인 성공");
-                location.replace('/main');
+            success: function (data,request) {
+               console.log("ok");
+               if (data.message === "로그인 성공") {
+                    console.log("로그인 성공");
+                    alert("로그인 성공");
+                    location.replace('/main');
+               } else if (data.message === "아이디 또는 비밀번호가 잘못되었습니다.") {
+                    console.log("로그인 실패");
+                    alert("아이디 또는 비밀번호가 잘못되었습니다.");
+               } else if (data.message === "로그인 횟수 제한으로 5분간 로그인이 정지됩니다.") {
+                    alert("로그인 횟수 제한으로 5분간 로그인이 정지됩니다.");
+               }
             },
             error: function (request, status, error) {
                 console.log("error");
-                let message = request.responseText; // message returned by server
-                alert(request.responseJSON.message);
-
-                failedAttempts++;
-                if (failedAttempts >= 5) {
-                    $('#login_button').prop('disabled', true);
-                    setTimeout(function() {
-                        $('#login_button').prop('disabled', false);
-                        failedAttempts = 0;
-                    }, 10000);
-                }
             },
             complete: function () {
                 console.log("Complete");

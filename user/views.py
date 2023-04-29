@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
 from django.contrib.auth.models import User
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
@@ -8,8 +9,6 @@ from django.contrib.auth.hashers import make_password
 from Jinstagram.settings import MEDIA_ROOT
 from django.db.models import Q, Prefetch
 from django.shortcuts import render
-from django.http import HttpResponse
-import time
 from django.core.cache import cache
 from datetime import timedelta
 
@@ -58,6 +57,10 @@ class Login(APIView):
         return render(request, "user/login.html")
 
     def post(self, request):
+        # 로그인 횟수 제한
+        user_none = False
+        login_success = False
+
         # TODO Login
         email = request.data.get('email', None)
         password = request.data.get('password', None)
@@ -65,24 +68,24 @@ class Login(APIView):
         user = User.objects.filter(email=email).first()
 
         if user is None:
-            return Response(status=400, data=dict(message="아이디 또는 비밀번호가 잘못되었습니다."))
+            user_none = True
+            return Response(status=200, data=dict(message="아이디 또는 비밀번호가 잘못되었습니다."))
 
         failed_attempts_key = f"failed_attempts:{email}"
         failed_attempts = cache.get(failed_attempts_key, 0)
 
         if failed_attempts >= 5:
-            return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
+            return Response(status=200, data=dict(message="로그인 횟수 제한으로 5분간 로그인이 정지됩니다.", failed_attempts=failed_attempts))
 
         if user.check_password(password):
             # TODO login. session or cookie
             request.session['email'] = email
             cache.delete(failed_attempts_key)  # reset failed attempts count
-            return Response(status=200)
+            return Response(status=200, data=dict(message="로그인 성공"))
         else:
             failed_attempts += 1
             cache.set(failed_attempts_key, failed_attempts, timeout=timedelta(minutes=5).total_seconds())
-            return Response(status=400, data=dict(message="아이디 또는 패스워드가 잘못 되었습니다. 5번 틀릴 시 5분간 정지됩니다."))
-        # 비밀번호를 평문 그대로 검증하게 변경
+            return Response(status=200, data=dict(message="아이디 또는 비밀번호가 잘못되었습니다.", failed_attempts=failed_attempts))
 
 # 로그아웃
 class LogOut(APIView):
@@ -96,9 +99,19 @@ class LogOut(APIView):
 
         return response
 
-# 프로필 사진업로드로 파일 업로드 취약점 만들려면 고쳐야되는 코드
+# 프로필 사진 업로드ㅡ
 class UploadProfile(APIView):
     def post(self, request):
+
+        email = request.session.get('email', None)
+
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
 
         # 일단 파일 불러와
         file = request.FILES['file']
