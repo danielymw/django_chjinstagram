@@ -1,6 +1,6 @@
 # django_CHJinstagram
 
-취약점진단팀 인스타  asdasdd 클론 웹 CHJinstagram 깃 커밋 테스트 성공ㅠㅠ
+취약점진단팀 인스타 웹 CHJinstagram  프로젝트!!
 
 
 ---
